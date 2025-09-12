@@ -3,7 +3,7 @@ import DarkSkyMap from '@/components/DarkSkyMap';
 import MitigationControls from '@/components/MitigationControls';
 import ProgressDashboard from '@/components/ProgressDashboard';
 import { Card } from '@/components/ui/card';
-import { Star, Map, Settings, BarChart3 } from 'lucide-react';
+import { Star, Map, Settings, BarChart3, RotateCcw } from 'lucide-react';
 
 const Index = () => {
   const [mitigationSettings, setMitigationSettings] = useState({
@@ -74,12 +74,22 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/20">
-              <Map className="w-4 h-4 text-primary" />
-              <div>
-                <div className="font-medium text-foreground">Current Status</div>
-                <div className="text-muted-foreground">Bortle 4.5 in Paynes Prairie</div>
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
+              <div className="flex items-center gap-2">
+                <Map className="w-4 h-4 text-primary" />
+                <div>
+                  <div className="font-medium text-foreground">Current Status</div>
+                  <div className="text-muted-foreground">Bortle 4.5 in Paynes Prairie</div>
+                </div>
               </div>
+              <button
+                onClick={handleReset}
+                className="flex items-center gap-1 px-2 py-1 text-xs bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 text-destructive rounded transition-colors"
+                title="Reset to natural baseline"
+              >
+                <RotateCcw className="w-3 h-3" />
+                Reset
+              </button>
             </div>
             <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/20">
               <Star className="w-4 h-4 text-mitigation" />
@@ -113,11 +123,10 @@ const Index = () => {
                   Configure reduction strategies
                 </p>
               </div>
-              <div className="h-[calc(100%-5rem)] overflow-hidden">
+              <div className="h-[calc(100%-5rem)]">
                 <MitigationControls 
                   settings={mitigationSettings}
                   onSettingChange={handleSettingChange}
-                  onReset={handleReset}
                 />
               </div>
             </Card>

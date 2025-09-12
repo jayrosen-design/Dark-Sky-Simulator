@@ -20,13 +20,11 @@ import {
 interface MitigationControlsProps {
   settings: Record<string, boolean | number>;
   onSettingChange: (key: string, value: boolean | number) => void;
-  onReset: () => void;
 }
 
 const MitigationControls: React.FC<MitigationControlsProps> = ({ 
   settings, 
-  onSettingChange,
-  onReset
+  onSettingChange
 }) => {
   const controlSections = [
     {
@@ -171,30 +169,7 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex-shrink-0 bg-gradient-space p-4 rounded-lg border border-primary/20 mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <Star className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">
-              Mitigation Strategies
-            </h2>
-          </div>
-          <button
-            onClick={onReset}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 text-destructive rounded-md transition-colors"
-            title="Reset to natural baseline"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Reset
-          </button>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Configure light pollution reduction measures to improve dark sky conditions
-        </p>
-      </div>
-
-      <div className="flex-1 overflow-y-auto pr-2 space-y-4">
+    <div className="h-full overflow-y-auto p-4 space-y-4">
 
       {controlSections.map((section) => (
         <Card 
@@ -273,7 +248,6 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
           Education and monitoring programs are essential requirements beyond just lighting improvements.
         </p>
         </Card>
-      </div>
     </div>
   );
 };
