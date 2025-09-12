@@ -256,32 +256,32 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       </Card>
 
       {/* Success Models */}
-      <Card className="p-4 bg-gradient-aurora border-primary/20 shadow-glow">
+      <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
         <div className="flex items-center gap-2 mb-3">
-          <Star className="w-4 h-4 text-primary-foreground" />
-          <h3 className="font-semibold text-primary-foreground">Success Models</h3>
+          <Star className="w-4 h-4 text-accent" />
+          <h3 className="font-semibold text-foreground">Success Models</h3>
         </div>
         <div className="space-y-3">
           <button
             onClick={() => onApplyPreset(presets.groveland)}
-            className="w-full p-3 rounded-lg bg-primary-foreground/10 hover:bg-primary-foreground/20 border border-primary-foreground/20 text-left transition-colors group"
+            className="w-full p-3 rounded-lg bg-card/50 hover:bg-card/70 border border-primary/20 text-left transition-colors group"
           >
-            <div className="font-medium text-primary-foreground group-hover:text-primary-foreground">
+            <div className="font-medium text-foreground group-hover:text-foreground">
               Groveland, FL Strategy
             </div>
-            <div className="text-xs text-primary-foreground/80 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               3000K limit, full shielding, 10-year retrofit plan
             </div>
           </button>
           
           <button
             onClick={() => onApplyPreset(presets.flagstaff)}
-            className="w-full p-3 rounded-lg bg-primary-foreground/10 hover:bg-primary-foreground/20 border border-primary-foreground/20 text-left transition-colors group"
+            className="w-full p-3 rounded-lg bg-card/50 hover:bg-card/70 border border-primary/20 text-left transition-colors group"
           >
-            <div className="font-medium text-primary-foreground group-hover:text-primary-foreground">
+            <div className="font-medium text-foreground group-hover:text-foreground">
               Flagstaff, AZ Strategy
             </div>
-            <div className="text-xs text-primary-foreground/80 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               2700K limit, lumen caps, comprehensive lighting zones
             </div>
           </button>
