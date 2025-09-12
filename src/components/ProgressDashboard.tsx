@@ -81,8 +81,8 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       { name: 'Lighting Ordinance', met: metrics.policyScore > 70, weight: 30 },
       { name: 'Public Lighting Retrofit', met: metrics.infrastructureScore > 60, weight: 25 },
       { name: 'Protected Areas', met: metrics.protectionScore > 50, weight: 20 },
-      { name: 'Community Education', met: false, weight: 15 }, // Not implemented yet
-      { name: 'Monitoring Program', met: false, weight: 10 }   // Not implemented yet
+      { name: 'Community Education', met: mitigationSettings.communityEducation, weight: 15 },
+      { name: 'Monitoring Program', met: mitigationSettings.monitoringProgram, weight: 10 }
     ];
     
     const metRequirements = requirements.filter(req => req.met);

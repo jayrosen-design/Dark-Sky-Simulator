@@ -24,6 +24,10 @@ const Index = () => {
     // Transportation
     highwayBarriers: false,
     lowAlbedoSurfaces: false,
+    
+    // Certification Requirements
+    communityEducation: false,
+    monitoringProgram: false,
   });
 
   const handleSettingChange = (key: string, value: boolean | number) => {
@@ -45,6 +49,8 @@ const Index = () => {
       campusLighting: false,
       highwayBarriers: false,
       lowAlbedoSurfaces: false,
+      communityEducation: false,
+      monitoringProgram: false,
     });
   };
 

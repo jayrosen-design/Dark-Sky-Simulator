@@ -12,7 +12,9 @@ import {
   Leaf,
   Building,
   Car,
-  RotateCcw
+  RotateCcw,
+  Users,
+  BarChart3
 } from 'lucide-react';
 
 interface MitigationControlsProps {
@@ -128,6 +130,34 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
           impact: 'Low'
         }
       ]
+    },
+    {
+      title: 'Community Engagement',
+      icon: <Users className="w-4 h-4" />,
+      color: 'mitigation',
+      controls: [
+        {
+          key: 'communityEducation',
+          label: 'Community Education Program',
+          description: 'Public outreach and dark sky awareness initiatives',
+          type: 'switch' as const,
+          impact: 'Medium'
+        }
+      ]
+    },
+    {
+      title: 'Data & Monitoring',
+      icon: <BarChart3 className="w-4 h-4" />,
+      color: 'success',
+      controls: [
+        {
+          key: 'monitoringProgram',
+          label: 'Sky Quality Monitoring',
+          description: 'Ongoing measurement and data collection program',
+          type: 'switch' as const,
+          impact: 'Medium'
+        }
+      ]
     }
   ];
 
@@ -234,11 +264,11 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
       <Card className="p-4 bg-gradient-dark-sky border-primary/20 shadow-glow">
         <div className="flex items-center gap-2 mb-2">
           <Leaf className="w-4 h-4 text-success" />
-          <h3 className="font-semibold text-foreground">Environmental Impact</h3>
+          <h3 className="font-semibold text-foreground">Certification Progress</h3>
         </div>
         <p className="text-xs text-muted-foreground">
-          These mitigation strategies also benefit wildlife, reduce energy consumption, 
-          and improve human health by minimizing artificial light at night.
+          These strategies contribute to achieving International Dark Sky Community certification. 
+          Education and monitoring programs are essential requirements beyond just lighting improvements.
         </p>
       </Card>
     </div>
