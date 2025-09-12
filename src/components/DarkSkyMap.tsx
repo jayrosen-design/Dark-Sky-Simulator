@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { Card } from '@/components/ui/card';
 
 interface DarkSkyMapProps {
@@ -9,192 +9,117 @@ interface DarkSkyMapProps {
 
 const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState<string>('');
-  const [showTokenInput, setShowTokenInput] = useState(true);
+  const map = useRef<L.Map | null>(null);
+  const pollutionLayers = useRef<L.LayerGroup | null>(null);
 
   useEffect(() => {
-    if (!mapContainer.current || !mapboxToken) return;
+    if (!mapContainer.current) return;
 
-    // Validate token format
-    if (!mapboxToken.startsWith('pk.')) {
-      console.error('Invalid Mapbox token. Please use a PUBLIC token that starts with "pk." not a secret token.');
-      return;
-    }
-
-    console.log('Initializing Mapbox with token:', mapboxToken.substring(0, 10) + '...');
+    console.log('Initializing Leaflet map...');
 
     // Initialize map
-    mapboxgl.accessToken = mapboxToken;
-    
-    try {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/dark-v11',
-        center: [-82.3248, 29.6516], // Gainesville, FL coordinates
-        zoom: 9,
-        pitch: 0,
-        bearing: 0,
-      });
+    map.current = L.map(mapContainer.current, {
+      center: [29.6516, -82.3248], // Gainesville, FL coordinates
+      zoom: 10,
+      zoomControl: true,
+      attributionControl: true
+    });
 
-      console.log('Map created successfully');
+    // Add OpenStreetMap tile layer with dark theme
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map.current);
 
-      // Add navigation controls
-      map.current.addControl(
-        new mapboxgl.NavigationControl({
-          visualizePitch: true,
-        }),
-        'top-right'
-      );
+    // Initialize pollution layers
+    pollutionLayers.current = L.layerGroup().addTo(map.current);
 
-      // Add light pollution overlays once map loads
-      map.current.on('load', () => {
-        console.log('Map loaded successfully');
-        addLightPollutionLayers();
-        addSensitiveAreas();
-      });
+    // Add light pollution overlays
+    addLightPollutionLayers();
+    addSensitiveAreas();
 
-      map.current.on('error', (e) => {
-        console.error('Mapbox error:', e);
-      });
-
-    } catch (error) {
-      console.error('Failed to initialize Mapbox map:', error);
-    }
+    console.log('Map initialized successfully');
 
     return () => {
-      map.current?.remove();
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
     };
-  }, [mapboxToken]);
+  }, []);
 
   // Update layers when mitigation settings change
   useEffect(() => {
-    if (!map.current?.isStyleLoaded()) return;
+    if (!map.current) return;
     updatePollutionVisualization();
   }, [mitigationSettings]);
 
   const addLightPollutionLayers = () => {
-    if (!map.current) return;
+    if (!map.current || !pollutionLayers.current) return;
 
-    // Simulated light pollution data - in real implementation, this would come from VIIRS data
-    map.current.addSource('light-pollution', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: [
-          // Gainesville urban core (Bortle 8-9)
-          {
-            type: 'Feature',
-            properties: { bortle: 9, intensity: 0.9, area: 'Gainesville Downtown' },
-            geometry: {
-              type: 'Polygon',
-              coordinates: [[
-                [-82.35, 29.64],
-                [-82.32, 29.64],
-                [-82.32, 29.67],
-                [-82.35, 29.67],
-                [-82.35, 29.64]
-              ]]
-            }
-          },
-          // Suburban Gainesville (Bortle 6-7)
-          {
-            type: 'Feature',
-            properties: { bortle: 6, intensity: 0.6, area: 'Suburban Gainesville' },
-            geometry: {
-              type: 'Polygon',
-              coordinates: [[
-                [-82.4, 29.6],
-                [-82.25, 29.6],
-                [-82.25, 29.7],
-                [-82.4, 29.7],
-                [-82.4, 29.6]
-              ]]
-            }
-          },
-          // Paynes Prairie area (Bortle 4-5)
-          {
-            type: 'Feature',
-            properties: { bortle: 4, intensity: 0.3, area: 'Paynes Prairie' },
-            geometry: {
-              type: 'Polygon',
-              coordinates: [[
-                [-82.35, 29.55],
-                [-82.25, 29.55],
-                [-82.25, 29.62],
-                [-82.35, 29.62],
-                [-82.35, 29.55]
-              ]]
-            }
-          }
-        ]
-      }
-    });
+    // Clear existing layers
+    pollutionLayers.current.clearLayers();
 
-    // Add light pollution fill layer
-    map.current.addLayer({
-      id: 'light-pollution-fill',
-      type: 'fill',
-      source: 'light-pollution',
-      paint: {
-        'fill-color': [
-          'interpolate',
-          ['linear'],
-          ['get', 'bortle'],
-          1, '#1e293b', // Bortle 1 - dark blue
-          4, '#fb923c', // Bortle 4 - orange
-          6, '#f97316', // Bortle 6 - bright orange  
-          9, '#ef4444'  // Bortle 9 - red
+    // Simulated light pollution data
+    const pollutionAreas = [
+      // Gainesville urban core (Bortle 8-9)
+      {
+        coords: [
+          [29.64, -82.35],
+          [29.64, -82.32],
+          [29.67, -82.32],
+          [29.67, -82.35]
         ],
-        'fill-opacity': [
-          'interpolate',
-          ['linear'],
-          ['get', 'intensity'],
-          0, 0.3,
-          1, 0.8
-        ]
+        bortle: 9,
+        intensity: 0.9,
+        area: 'Gainesville Downtown',
+        color: '#ef4444'
+      },
+      // Suburban Gainesville (Bortle 6-7)
+      {
+        coords: [
+          [29.6, -82.4],
+          [29.6, -82.25],
+          [29.7, -82.25],
+          [29.7, -82.4]
+        ],
+        bortle: 6,
+        intensity: 0.6,
+        area: 'Suburban Gainesville',
+        color: '#f97316'
+      },
+      // Paynes Prairie area (Bortle 4-5)
+      {
+        coords: [
+          [29.55, -82.35],
+          [29.55, -82.25],
+          [29.62, -82.25],
+          [29.62, -82.35]
+        ],
+        bortle: 4,
+        intensity: 0.3,
+        area: 'Paynes Prairie',
+        color: '#fb923c'
       }
-    });
+    ];
 
-    // Add light pollution outline
-    map.current.addLayer({
-      id: 'light-pollution-outline',
-      type: 'line',
-      source: 'light-pollution',
-      paint: {
-        'line-color': '#ffffff',
-        'line-width': 1,
-        'line-opacity': 0.5
-      }
-    });
+    pollutionAreas.forEach(area => {
+      const polygon = L.polygon(area.coords as L.LatLngExpression[], {
+        color: '#ffffff',
+        weight: 1,
+        opacity: 0.5,
+        fillColor: area.color,
+        fillOpacity: area.intensity * 0.6
+      }).addTo(pollutionLayers.current!);
 
-    // Add popup on click
-    map.current.on('click', 'light-pollution-fill', (e) => {
-      if (!e.features?.[0]) return;
-      
-      const feature = e.features[0];
-      const coordinates = e.lngLat;
-      const { bortle, area } = feature.properties;
-
-      new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(`
-          <div class="p-2">
-            <h3 class="font-semibold">${area}</h3>
-            <p class="text-sm">Bortle Class: ${bortle}</p>
-            <p class="text-xs text-gray-600">Click for detailed analysis</p>
-          </div>
-        `)
-        .addTo(map.current!);
-    });
-
-    // Change cursor on hover
-    map.current.on('mouseenter', 'light-pollution-fill', () => {
-      map.current!.getCanvas().style.cursor = 'pointer';
-    });
-
-    map.current.on('mouseleave', 'light-pollution-fill', () => {
-      map.current!.getCanvas().style.cursor = '';
+      polygon.bindPopup(`
+        <div class="p-2">
+          <h3 class="font-semibold text-gray-900">${area.area}</h3>
+          <p class="text-sm text-gray-700">Bortle Class: ${area.bortle}</p>
+          <p class="text-xs text-gray-600">Click for detailed analysis</p>
+        </div>
+      `);
     });
   };
 
@@ -205,55 +130,58 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     const sensitiveAreas = [
       {
         name: 'Paynes Prairie Preserve State Park',
-        coordinates: [-82.3, 29.58],
+        coordinates: [29.58, -82.3] as L.LatLngExpression,
         type: 'preserve'
       },
       {
         name: 'San Felasco Hammock Preserve',
-        coordinates: [-82.42, 29.68],
+        coordinates: [29.68, -82.42] as L.LatLngExpression,
         type: 'preserve'
       },
       {
         name: 'Rosemary Hill Observatory',
-        coordinates: [-82.35, 29.72],
+        coordinates: [29.72, -82.35] as L.LatLngExpression,
         type: 'observatory'
       }
     ];
 
+    // Create custom icon for protected areas
+    const protectedIcon = L.divIcon({
+      html: '<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+      iconSize: [16, 16],
+      className: 'custom-div-icon'
+    });
+
     sensitiveAreas.forEach(area => {
-      const marker = new mapboxgl.Marker({
-        color: '#3b82f6',
-        scale: 0.8
-      })
-        .setLngLat(area.coordinates as [number, number])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 })
-            .setHTML(`
-              <div class="p-2">
-                <h3 class="font-semibold">${area.name}</h3>
-                <p class="text-sm capitalize">${area.type}</p>
-                <p class="text-xs text-gray-600">Protected Dark Sky Area</p>
-              </div>
-            `)
-        )
-        .addTo(map.current!);
+      const marker = L.marker(area.coordinates, { 
+        icon: protectedIcon 
+      }).addTo(map.current!);
+
+      marker.bindPopup(`
+        <div class="p-2">
+          <h3 class="font-semibold text-gray-900">${area.name}</h3>
+          <p class="text-sm capitalize text-gray-700">${area.type}</p>
+          <p class="text-xs text-gray-600">Protected Dark Sky Area</p>
+        </div>
+      `);
     });
   };
 
   const updatePollutionVisualization = () => {
-    if (!map.current?.getSource('light-pollution')) return;
+    if (!pollutionLayers.current) return;
 
     // Calculate mitigation effect
     const mitigationFactor = calculateMitigationFactor(mitigationSettings);
     
     // Update layer opacity based on mitigation
-    map.current.setPaintProperty('light-pollution-fill', 'fill-opacity', [
-      'interpolate',
-      ['linear'],
-      ['get', 'intensity'],
-      0, 0.1 * mitigationFactor,
-      1, 0.8 * mitigationFactor
-    ]);
+    pollutionLayers.current.eachLayer((layer: any) => {
+      if (layer.setStyle) {
+        const currentOpacity = layer.options.fillOpacity || 0.6;
+        layer.setStyle({
+          fillOpacity: currentOpacity * mitigationFactor
+        });
+      }
+    });
   };
 
   const calculateMitigationFactor = (settings: Record<string, boolean | number>): number => {
@@ -268,53 +196,10 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     return Math.max(factor, 0.1); // Minimum 10% pollution remains
   };
 
-  const handleTokenSubmit = () => {
-    if (mapboxToken.trim()) {
-      if (!mapboxToken.startsWith('pk.')) {
-        alert('Please use a PUBLIC Mapbox token that starts with "pk." not a secret token that starts with "sk."');
-        return;
-      }
-      setShowTokenInput(false);
-    }
-  };
-
-  if (showTokenInput) {
-    return (
-      <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-primary/20">
-        <h3 className="text-lg font-semibold text-foreground">Mapbox Configuration</h3>
-        <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20">
-          <p className="text-sm text-destructive font-medium mb-2">⚠️ Important: Use a PUBLIC token</p>
-          <p className="text-xs text-muted-foreground">
-            You need a PUBLIC token that starts with "pk." (not a secret token that starts with "sk.").
-          </p>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Get your PUBLIC token at <a href="https://mapbox.com/" target="_blank" rel="noopener noreferrer" className="text-primary underline">mapbox.com</a> → Account → Access Tokens
-        </p>
-        <div className="space-y-2">
-          <input
-            type="text"
-            placeholder="pk.ey..."
-            value={mapboxToken}
-            onChange={(e) => setMapboxToken(e.target.value)}
-            className="w-full p-2 rounded-md bg-input border border-border text-foreground"
-          />
-          <button
-            onClick={handleTokenSubmit}
-            disabled={!mapboxToken.trim()}
-            className="w-full p-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors"
-          >
-            Initialize Map
-          </button>
-        </div>
-      </Card>
-    );
-  }
-
   return (
     <div className="relative w-full h-full rounded-lg overflow-hidden border border-primary/20 shadow-glow">
       <div ref={mapContainer} className="absolute inset-0" />
-      <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20">
+      <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20 z-[1000]">
         <h4 className="font-semibold text-sm mb-2">Light Pollution Levels</h4>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
