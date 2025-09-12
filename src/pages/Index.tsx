@@ -54,6 +54,13 @@ const Index = () => {
     });
   };
 
+  const handleApplyPreset = (presetSettings: Record<string, boolean | number>) => {
+    setMitigationSettings(prev => ({
+      ...prev,
+      ...presetSettings
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-space">
       <div className="w-full space-y-4 p-4">
@@ -168,7 +175,10 @@ const Index = () => {
                 </p>
               </div>
               <div className="h-[calc(100%-5rem)] overflow-hidden">
-                <ProgressDashboard mitigationSettings={mitigationSettings} />
+                <ProgressDashboard 
+                  mitigationSettings={mitigationSettings} 
+                  onApplyPreset={handleApplyPreset}
+                />
               </div>
             </Card>
           </div>

@@ -14,10 +14,12 @@ import {
 
 interface ProgressDashboardProps {
   mitigationSettings: Record<string, boolean | number>;
+  onApplyPreset: (settings: Record<string, boolean | number>) => void;
 }
 
 const ProgressDashboard: React.FC<ProgressDashboardProps> = ({ 
-  mitigationSettings 
+  mitigationSettings,
+  onApplyPreset
 }) => {
   // Calculate progress metrics based on mitigation settings
   const calculateMetrics = () => {
@@ -96,6 +98,38 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
   };
 
   const darkSkyStatus = getDarkSkyProgress();
+
+  // Preset configurations based on real success models
+  const presets = {
+    groveland: {
+      fullShielding: true,
+      cctLimits: true,
+      intensityReduction: 20,
+      curfews: true,
+      streetlightDimming: true,
+      warmLEDs: true,
+      darkSkyOverlays: true,
+      campusLighting: true,
+      highwayBarriers: false,
+      lowAlbedoSurfaces: false,
+      communityEducation: true,
+      monitoringProgram: true,
+    },
+    flagstaff: {
+      fullShielding: true,
+      cctLimits: true,
+      intensityReduction: 30,
+      curfews: true,
+      streetlightDimming: true,
+      warmLEDs: true,
+      darkSkyOverlays: true,
+      campusLighting: true,
+      highwayBarriers: true,
+      lowAlbedoSurfaces: true,
+      communityEducation: true,
+      monitoringProgram: true,
+    }
+  };
 
   return (
     <div className="space-y-4 h-full overflow-y-auto pr-2 p-4">
@@ -223,19 +257,34 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
 
       {/* Success Models */}
       <Card className="p-4 bg-gradient-aurora border-primary/20 shadow-glow">
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-3">
           <Star className="w-4 h-4 text-primary-foreground" />
           <h3 className="font-semibold text-primary-foreground">Success Models</h3>
         </div>
-        <div className="space-y-2 text-sm text-primary-foreground/90">
-          <div>
-            <div className="font-medium">Groveland, FL</div>
-            <div className="text-xs opacity-80">3000K limit, full shielding, 10-year retrofit</div>
-          </div>
-          <div>
-            <div className="font-medium">Flagstaff, AZ</div>
-            <div className="text-xs opacity-80">2700K limit, lumen caps, lighting zones</div>
-          </div>
+        <div className="space-y-3">
+          <button
+            onClick={() => onApplyPreset(presets.groveland)}
+            className="w-full p-3 rounded-lg bg-primary-foreground/10 hover:bg-primary-foreground/20 border border-primary-foreground/20 text-left transition-colors group"
+          >
+            <div className="font-medium text-primary-foreground group-hover:text-primary-foreground">
+              Groveland, FL Strategy
+            </div>
+            <div className="text-xs text-primary-foreground/80 mt-1">
+              3000K limit, full shielding, 10-year retrofit plan
+            </div>
+          </button>
+          
+          <button
+            onClick={() => onApplyPreset(presets.flagstaff)}
+            className="w-full p-3 rounded-lg bg-primary-foreground/10 hover:bg-primary-foreground/20 border border-primary-foreground/20 text-left transition-colors group"
+          >
+            <div className="font-medium text-primary-foreground group-hover:text-primary-foreground">
+              Flagstaff, AZ Strategy
+            </div>
+            <div className="text-xs text-primary-foreground/80 mt-1">
+              2700K limit, lumen caps, comprehensive lighting zones
+            </div>
+          </button>
         </div>
       </Card>
     </div>
