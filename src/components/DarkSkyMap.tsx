@@ -229,7 +229,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   return (
     <div className="relative w-full h-full rounded-lg overflow-hidden border border-primary/20 shadow-glow">
       <div ref={mapContainer} className="absolute inset-0" />
-      <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20 z-[1000]">
+      <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20 z-[1000]">
         <h4 className="font-semibold text-sm mb-2">Light Pollution Levels</h4>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
