@@ -58,28 +58,28 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-space">
       <div className="w-full space-y-4 p-4">
         {/* Header */}
-        <Card className="p-6 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-lg bg-primary/10 animate-glow">
-              <Star className="w-8 h-8 text-primary" />
+        <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="p-2 rounded-lg bg-primary/10 animate-glow">
+              <Star className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-xl font-bold text-foreground">
                 Alachua Dark Sky Simulator
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Interactive light pollution mapping and mitigation planning for Alachua County, Florida
               </p>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/20">
               <div className="flex items-center gap-2">
                 <Map className="w-4 h-4 text-primary" />
                 <div>
-                  <div className="font-medium text-foreground">Current Status</div>
-                  <div className="text-muted-foreground">Bortle 4.5 in Paynes Prairie</div>
+                  <div className="font-medium text-foreground text-xs">Current Status</div>
+                  <div className="text-muted-foreground text-xs">Bortle 4.5 in Paynes Prairie</div>
                 </div>
               </div>
               <button
@@ -91,25 +91,25 @@ const Index = () => {
                 Reset
               </button>
             </div>
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/20">
+            <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
               <Star className="w-4 h-4 text-mitigation" />
               <div>
-                <div className="font-medium text-foreground">Goal</div>
-                <div className="text-muted-foreground">International Dark Sky Status</div>
+                <div className="font-medium text-foreground text-xs">Goal</div>
+                <div className="text-muted-foreground text-xs">International Dark Sky Status</div>
               </div>
             </div>
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/20">
+            <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
               <BarChart3 className="w-4 h-4 text-success" />
               <div>
-                <div className="font-medium text-foreground">Impact Area</div>
-                <div className="text-muted-foreground">Alachua County</div>
+                <div className="font-medium text-foreground text-xs">Impact Area</div>
+                <div className="text-muted-foreground text-xs">Alachua County</div>
               </div>
             </div>
           </div>
         </Card>
 
         {/* Main Content - 3 Column Layout */}
-        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-14rem)]">
+        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-10rem)]">
           
           {/* Left Column - Mitigation Controls */}
           <div className="col-span-12 lg:col-span-3">
