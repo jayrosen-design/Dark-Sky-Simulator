@@ -33,6 +33,21 @@ const Index = () => {
     }));
   };
 
+  const handleReset = () => {
+    setMitigationSettings({
+      fullShielding: false,
+      cctLimits: false,
+      intensityReduction: 0,
+      curfews: false,
+      streetlightDimming: false,
+      warmLEDs: false,
+      darkSkyOverlays: false,
+      campusLighting: false,
+      highwayBarriers: false,
+      lowAlbedoSurfaces: false,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-space">
       <div className="w-full space-y-4 p-4">
@@ -96,6 +111,7 @@ const Index = () => {
                 <MitigationControls 
                   settings={mitigationSettings}
                   onSettingChange={handleSettingChange}
+                  onReset={handleReset}
                 />
               </div>
             </Card>

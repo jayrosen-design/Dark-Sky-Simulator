@@ -11,17 +11,20 @@ import {
   Star,
   Leaf,
   Building,
-  Car
+  Car,
+  RotateCcw
 } from 'lucide-react';
 
 interface MitigationControlsProps {
   settings: Record<string, boolean | number>;
   onSettingChange: (key: string, value: boolean | number) => void;
+  onReset: () => void;
 }
 
 const MitigationControls: React.FC<MitigationControlsProps> = ({ 
   settings, 
-  onSettingChange 
+  onSettingChange,
+  onReset
 }) => {
   const controlSections = [
     {
@@ -140,11 +143,23 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
   return (
     <div className="space-y-4 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
       <div className="sticky top-0 bg-gradient-space p-4 rounded-lg border border-primary/20 z-10">
-        <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-          <Star className="w-5 h-5 text-primary" />
-          Mitigation Strategies
-        </h2>
-        <p className="text-sm text-muted-foreground mt-1">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <Star className="w-5 h-5 text-primary" />
+            <h2 className="text-lg font-semibold text-foreground">
+              Mitigation Strategies
+            </h2>
+          </div>
+          <button
+            onClick={onReset}
+            className="flex items-center gap-2 px-3 py-1.5 text-sm bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 text-destructive rounded-md transition-colors"
+            title="Reset to natural baseline"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Reset
+          </button>
+        </div>
+        <p className="text-sm text-muted-foreground">
           Configure light pollution reduction measures to improve dark sky conditions
         </p>
       </div>
