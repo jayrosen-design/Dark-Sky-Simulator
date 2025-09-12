@@ -3,7 +3,6 @@ import DarkSkyMap from '@/components/DarkSkyMap';
 import MitigationControls from '@/components/MitigationControls';
 import ProgressDashboard from '@/components/ProgressDashboard';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Star, Map, Settings, BarChart3 } from 'lucide-react';
 
 const Index = () => {
@@ -35,8 +34,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-space p-4">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-space">
+      <div className="w-full space-y-4 p-4">
         {/* Header */}
         <Card className="p-6 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
           <div className="flex items-center gap-3 mb-4">
@@ -78,51 +77,63 @@ const Index = () => {
           </div>
         </Card>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-16rem)]">
-          {/* Map Section */}
-          <div className="lg:col-span-2">
+        {/* Main Content - 3 Column Layout */}
+        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-14rem)]">
+          
+          {/* Left Column - Mitigation Controls */}
+          <div className="col-span-12 lg:col-span-3">
+            <Card className="h-full bg-card/50 backdrop-blur-sm border-primary/20">
+              <div className="p-4 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                  <Settings className="w-5 h-5 text-primary" />
+                  Mitigation Controls
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Configure reduction strategies
+                </p>
+              </div>
+              <div className="p-4 h-[calc(100%-5rem)] overflow-y-auto">
+                <MitigationControls 
+                  settings={mitigationSettings}
+                  onSettingChange={handleSettingChange}
+                />
+              </div>
+            </Card>
+          </div>
+
+          {/* Center Column - Map */}
+          <div className="col-span-12 lg:col-span-6">
             <Card className="h-full p-4 bg-card/50 backdrop-blur-sm border-primary/20">
-              <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-4">
                 <Map className="w-5 h-5 text-primary" />
-                Light Pollution Map
-              </h2>
+                <h2 className="text-lg font-semibold text-foreground">
+                  Light Pollution Map
+                </h2>
+              </div>
               <div className="h-[calc(100%-3rem)]">
                 <DarkSkyMap mitigationSettings={mitigationSettings} />
               </div>
             </Card>
           </div>
 
-          {/* Controls and Dashboard */}
-          <div className="lg:col-span-2">
-            <Tabs defaultValue="controls" className="h-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4 bg-muted/20">
-                <TabsTrigger value="controls" className="flex items-center gap-2">
-                  <Settings className="w-4 h-4" />
-                  Controls
-                </TabsTrigger>
-                <TabsTrigger value="progress" className="flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4" />
-                  Progress
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="controls" className="h-[calc(100%-4rem)]">
-                <Card className="h-full p-4 bg-card/50 backdrop-blur-sm border-primary/20">
-                  <MitigationControls 
-                    settings={mitigationSettings}
-                    onSettingChange={handleSettingChange}
-                  />
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="progress" className="h-[calc(100%-4rem)]">
-                <Card className="h-full p-4 bg-card/50 backdrop-blur-sm border-primary/20">
-                  <ProgressDashboard mitigationSettings={mitigationSettings} />
-                </Card>
-              </TabsContent>
-            </Tabs>
+          {/* Right Column - Progress Dashboard */}
+          <div className="col-span-12 lg:col-span-3">
+            <Card className="h-full bg-card/50 backdrop-blur-sm border-primary/20">
+              <div className="p-4 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-primary" />
+                  Progress Dashboard
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Track certification progress
+                </p>
+              </div>
+              <div className="p-4 h-[calc(100%-5rem)] overflow-y-auto">
+                <ProgressDashboard mitigationSettings={mitigationSettings} />
+              </div>
+            </Card>
           </div>
+          
         </div>
       </div>
     </div>
