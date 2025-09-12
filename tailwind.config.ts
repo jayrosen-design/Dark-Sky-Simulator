@@ -47,16 +47,36 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        /* Dark Sky Simulator specific colors */
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
         },
+        mitigation: {
+          DEFAULT: "hsl(var(--mitigation))",
+          foreground: "hsl(var(--mitigation-foreground))",
+        },
+        bortle: {
+          1: "hsl(var(--bortle-1))",
+          4: "hsl(var(--bortle-4))",
+          6: "hsl(var(--bortle-6))",
+          9: "hsl(var(--bortle-9))",
+        },
+      },
+      backgroundImage: {
+        'gradient-space': 'var(--gradient-space)',
+        'gradient-aurora': 'var(--gradient-aurora)',
+        'gradient-pollution': 'var(--gradient-pollution)',
+        'gradient-dark-sky': 'var(--gradient-dark-sky)',
+      },
+      boxShadow: {
+        'space': 'var(--shadow-space)',
+        'glow': 'var(--shadow-glow)',
+        'pollution': 'var(--shadow-pollution)',
+      },
+      transitionTimingFunction: {
+        'smooth': 'var(--transition-smooth)',
+        'bounce': 'var(--transition-bounce)',
       },
       borderRadius: {
         lg: "var(--radius)",
