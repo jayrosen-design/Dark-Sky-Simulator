@@ -124,11 +124,11 @@ const Index = () => {
         </Card>
 
         {/* Main Content - 3 Column Layout */}
-        <div className="grid grid-cols-12 gap-4 h-[calc(100vh-8rem)]">
+        <div className="grid grid-cols-12 gap-4 min-h-[calc(100vh-8rem)]">
           
           {/* Left Column - Mitigation Controls */}
           <div className="col-span-12 lg:col-span-3">
-            <Card className="h-full bg-card/50 backdrop-blur-sm border-primary/20">
+            <Card className="h-auto lg:h-full bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                   <Settings className="w-5 h-5 text-primary" />
@@ -138,7 +138,7 @@ const Index = () => {
                   Configure reduction strategies
                 </p>
               </div>
-              <div className="h-[calc(100%-5rem)]">
+              <div className="lg:h-[calc(100%-5rem)]">
                 <MitigationControls 
                   settings={mitigationSettings}
                   onSettingChange={handleSettingChange}
@@ -149,14 +149,14 @@ const Index = () => {
 
           {/* Center Column - Map */}
           <div className="col-span-12 lg:col-span-6">
-            <Card className="h-full p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+            <Card className="h-auto lg:h-full p-4 bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="flex items-center gap-2 mb-4">
                 <Map className="w-5 h-5 text-primary" />
                 <h2 className="text-lg font-semibold text-foreground">
                   Light Pollution Map
                 </h2>
               </div>
-              <div className="h-[calc(100%-3rem)]">
+              <div className="h-96 lg:h-[calc(100%-3rem)]">
                 <DarkSkyMap mitigationSettings={mitigationSettings} />
               </div>
             </Card>
@@ -164,7 +164,7 @@ const Index = () => {
 
           {/* Right Column - Progress Dashboard */}
           <div className="col-span-12 lg:col-span-3">
-            <Card className="h-full bg-card/50 backdrop-blur-sm border-primary/20">
+            <Card className="h-auto lg:h-full bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-primary" />
@@ -174,7 +174,7 @@ const Index = () => {
                   Track certification progress
                 </p>
               </div>
-              <div className="h-[calc(100%-5rem)] overflow-hidden">
+              <div className="lg:h-[calc(100%-5rem)] lg:overflow-hidden">
                 <ProgressDashboard 
                   mitigationSettings={mitigationSettings} 
                   onApplyPreset={handleApplyPreset}
