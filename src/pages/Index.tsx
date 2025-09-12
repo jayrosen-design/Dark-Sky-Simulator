@@ -113,7 +113,7 @@ const Index = () => {
                   Configure reduction strategies
                 </p>
               </div>
-              <div className="p-4 h-[calc(100%-5rem)] overflow-y-auto">
+              <div className="h-[calc(100%-5rem)] overflow-hidden">
                 <MitigationControls 
                   settings={mitigationSettings}
                   onSettingChange={handleSettingChange}
@@ -150,7 +150,7 @@ const Index = () => {
                   Track certification progress
                 </p>
               </div>
-              <div className="p-4 h-[calc(100%-5rem)] overflow-y-auto">
+              <div className="h-[calc(100%-5rem)] overflow-hidden">
                 <ProgressDashboard mitigationSettings={mitigationSettings} />
               </div>
             </Card>

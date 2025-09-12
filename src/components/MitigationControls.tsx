@@ -171,8 +171,8 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
   };
 
   return (
-    <div className="space-y-4 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
-      <div className="sticky top-0 bg-gradient-space p-4 rounded-lg border border-primary/20 z-10">
+    <div className="h-full flex flex-col">
+      <div className="flex-shrink-0 bg-gradient-space p-4 rounded-lg border border-primary/20 mb-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <Star className="w-5 h-5 text-primary" />
@@ -193,6 +193,8 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
           Configure light pollution reduction measures to improve dark sky conditions
         </p>
       </div>
+
+      <div className="flex-1 overflow-y-auto pr-2 space-y-4">
 
       {controlSections.map((section) => (
         <Card 
@@ -270,7 +272,8 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
           These strategies contribute to achieving International Dark Sky Community certification. 
           Education and monitoring programs are essential requirements beyond just lighting improvements.
         </p>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 };

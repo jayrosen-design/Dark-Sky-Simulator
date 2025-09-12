@@ -98,7 +98,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
   const darkSkyStatus = getDarkSkyProgress();
 
   return (
-    <div className="space-y-4 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
+    <div className="space-y-4 h-full overflow-y-auto pr-2 p-4">
       {/* Paynes Prairie Bortle Status */}
       <Card className="p-4 bg-gradient-dark-sky border-primary/20 shadow-glow">
         <div className="flex items-center gap-2 mb-3">
