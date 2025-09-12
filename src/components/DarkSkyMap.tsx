@@ -113,6 +113,11 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
         fillOpacity: area.intensity * 0.6
       }).addTo(pollutionLayers.current!);
 
+      // Store original values as custom properties on the layer
+      (polygon as any)._originalColor = area.color;
+      (polygon as any)._originalOpacity = area.intensity * 0.6;
+      (polygon as any)._originalIntensity = area.intensity;
+
       polygon.bindPopup(`
         <div class="p-2">
           <h3 class="font-semibold text-gray-900">${area.area}</h3>
@@ -173,12 +178,33 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     // Calculate mitigation effect
     const mitigationFactor = calculateMitigationFactor(mitigationSettings);
     
-    // Update layer opacity based on mitigation
+    // Update layer colors and opacity based on mitigation
     pollutionLayers.current.eachLayer((layer: any) => {
-      if (layer.setStyle) {
-        const currentOpacity = layer.options.fillOpacity || 0.6;
+      if (layer.setStyle && layer._originalColor) {
+        // Maintain minimum visibility while showing improvement
+        const adjustedOpacity = Math.max(0.2, layer._originalOpacity * mitigationFactor);
+        
+        // Adjust color to show improvement - shift toward cooler colors
+        let adjustedColor = layer._originalColor;
+        
+        // Progressive color changes as mitigation improves
+        if (mitigationFactor < 0.8) {
+          const improvement = 1 - mitigationFactor;
+          if (layer._originalColor === '#ef4444') { // Red -> Orange -> Yellow -> Green
+            if (improvement > 0.6) adjustedColor = '#22c55e'; // Green
+            else if (improvement > 0.4) adjustedColor = '#fbbf24'; // Yellow  
+            else if (improvement > 0.2) adjustedColor = '#fb923c'; // Orange
+          } else if (layer._originalColor === '#f97316') { // Orange -> Yellow -> Green
+            if (improvement > 0.5) adjustedColor = '#22c55e'; // Green
+            else if (improvement > 0.3) adjustedColor = '#fbbf24'; // Yellow
+          } else if (layer._originalColor === '#fb923c') { // Light orange -> Green
+            if (improvement > 0.3) adjustedColor = '#22c55e'; // Green
+          }
+        }
+        
         layer.setStyle({
-          fillOpacity: currentOpacity * mitigationFactor
+          fillOpacity: adjustedOpacity,
+          fillColor: adjustedColor
         });
       }
     });
@@ -187,13 +213,17 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   const calculateMitigationFactor = (settings: Record<string, boolean | number>): number => {
     let factor = 1.0;
     
-    // Apply various mitigation effects
-    if (settings.fullShielding) factor *= 0.7;
-    if (settings.cctLimits) factor *= 0.8;
-    if (settings.curfews) factor *= 0.6;
-    if (settings.streetlightDimming) factor *= 0.85;
+    // Apply various mitigation effects with more gradual reduction
+    if (settings.fullShielding) factor *= 0.75;
+    if (settings.cctLimits) factor *= 0.85;
+    if (settings.curfews) factor *= 0.70;
+    if (settings.streetlightDimming) factor *= 0.90;
+    if (settings.darkSkyOverlays) factor *= 0.80;
+    if (settings.intensityReduction) {
+      factor *= (1 - (settings.intensityReduction as number) * 0.01);
+    }
     
-    return Math.max(factor, 0.1); // Minimum 10% pollution remains
+    return Math.max(factor, 0.25); // Minimum 25% pollution remains (more realistic)
   };
 
   return (
