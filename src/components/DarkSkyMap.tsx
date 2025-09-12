@@ -16,31 +16,51 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   useEffect(() => {
     if (!mapContainer.current || !mapboxToken) return;
 
+    // Validate token format
+    if (!mapboxToken.startsWith('pk.')) {
+      console.error('Invalid Mapbox token. Please use a PUBLIC token that starts with "pk." not a secret token.');
+      return;
+    }
+
+    console.log('Initializing Mapbox with token:', mapboxToken.substring(0, 10) + '...');
+
     // Initialize map
     mapboxgl.accessToken = mapboxToken;
     
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
-      center: [-82.3248, 29.6516], // Gainesville, FL coordinates
-      zoom: 9,
-      pitch: 0,
-      bearing: 0,
-    });
+    try {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: [-82.3248, 29.6516], // Gainesville, FL coordinates
+        zoom: 9,
+        pitch: 0,
+        bearing: 0,
+      });
 
-    // Add navigation controls
-    map.current.addControl(
-      new mapboxgl.NavigationControl({
-        visualizePitch: true,
-      }),
-      'top-right'
-    );
+      console.log('Map created successfully');
 
-    // Add light pollution overlays once map loads
-    map.current.on('load', () => {
-      addLightPollutionLayers();
-      addSensitiveAreas();
-    });
+      // Add navigation controls
+      map.current.addControl(
+        new mapboxgl.NavigationControl({
+          visualizePitch: true,
+        }),
+        'top-right'
+      );
+
+      // Add light pollution overlays once map loads
+      map.current.on('load', () => {
+        console.log('Map loaded successfully');
+        addLightPollutionLayers();
+        addSensitiveAreas();
+      });
+
+      map.current.on('error', (e) => {
+        console.error('Mapbox error:', e);
+      });
+
+    } catch (error) {
+      console.error('Failed to initialize Mapbox map:', error);
+    }
 
     return () => {
       map.current?.remove();
@@ -250,6 +270,10 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
 
   const handleTokenSubmit = () => {
     if (mapboxToken.trim()) {
+      if (!mapboxToken.startsWith('pk.')) {
+        alert('Please use a PUBLIC Mapbox token that starts with "pk." not a secret token that starts with "sk."');
+        return;
+      }
       setShowTokenInput(false);
     }
   };
@@ -258,9 +282,14 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     return (
       <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-primary/20">
         <h3 className="text-lg font-semibold text-foreground">Mapbox Configuration</h3>
+        <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+          <p className="text-sm text-destructive font-medium mb-2">⚠️ Important: Use a PUBLIC token</p>
+          <p className="text-xs text-muted-foreground">
+            You need a PUBLIC token that starts with "pk." (not a secret token that starts with "sk.").
+          </p>
+        </div>
         <p className="text-sm text-muted-foreground">
-          Please enter your Mapbox public token to initialize the map. 
-          Get yours at <a href="https://mapbox.com/" target="_blank" rel="noopener noreferrer" className="text-primary underline">mapbox.com</a>
+          Get your PUBLIC token at <a href="https://mapbox.com/" target="_blank" rel="noopener noreferrer" className="text-primary underline">mapbox.com</a> → Account → Access Tokens
         </p>
         <div className="space-y-2">
           <input
