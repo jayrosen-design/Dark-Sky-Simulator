@@ -130,7 +130,7 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
       ]
     },
     {
-      title: 'Community Engagement',
+      title: 'Community & Monitoring',
       icon: <Users className="w-4 h-4" />,
       color: 'mitigation',
       controls: [
@@ -140,14 +140,7 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
           description: 'Public outreach and dark sky awareness initiatives',
           type: 'switch' as const,
           impact: 'Medium'
-        }
-      ]
-    },
-    {
-      title: 'Data & Monitoring',
-      icon: <BarChart3 className="w-4 h-4" />,
-      color: 'success',
-      controls: [
+        },
         {
           key: 'monitoringProgram',
           label: 'Sky Quality Monitoring',
@@ -169,7 +162,7 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
   };
 
   return (
-    <div className="h-full overflow-y-auto p-4 space-y-4">
+    <div className="h-full overflow-y-auto p-4 space-y-4 pb-6">
 
       {controlSections.map((section) => (
         <Card 
