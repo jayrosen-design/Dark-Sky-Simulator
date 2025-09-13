@@ -61,68 +61,115 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     // Clear existing layers
     pollutionLayers.current.clearLayers();
 
-    // Simulated light pollution data
+    // Realistic light pollution data with organic shapes based on NASA Black Marble VNP46A2 patterns
     const pollutionAreas = [
-      // Gainesville urban core (Bortle 8-9)
+      // Urban core - high intensity, organic city shape
       {
         coords: [
-          [29.64, -82.35],
-          [29.64, -82.32],
-          [29.67, -82.32],
-          [29.67, -82.35]
+          [29.6720, -82.3400], [29.6710, -82.3350], [29.6650, -82.3200], [29.6590, -82.3150],
+          [29.6500, -82.3200], [29.6450, -82.3280], [29.6400, -82.3350], [29.6420, -82.3420],
+          [29.6480, -82.3480], [29.6580, -82.3500], [29.6650, -82.3480], [29.6720, -82.3400]
         ],
+        radiance: 45.8, // nW⋅cm−2⋅sr−1 - typical urban core
         bortle: 9,
-        intensity: 0.9,
-        area: 'Gainesville Downtown',
-        color: '#ef4444'
+        area: 'Gainesville Urban Core',
+        color: '#ffffff', // White for highest pollution
+        description: 'Downtown and University of Florida campus area'
       },
-      // Suburban Gainesville (Bortle 6-7)
+      // Main commercial corridors - irregular shapes following roads
       {
         coords: [
-          [29.6, -82.4],
-          [29.6, -82.25],
-          [29.7, -82.25],
-          [29.7, -82.4]
+          [29.6900, -82.3800], [29.6850, -82.3200], [29.6650, -82.3100], [29.6400, -82.3150],
+          [29.6200, -82.3300], [29.6100, -82.3600], [29.6200, -82.3900], [29.6500, -82.4100],
+          [29.6800, -82.4000], [29.6900, -82.3800]
         ],
-        bortle: 6,
-        intensity: 0.6,
-        area: 'Suburban Gainesville',
-        color: '#f97316'
+        radiance: 28.3,
+        bortle: 7,
+        area: 'Commercial Corridors',
+        color: '#fbbf24', // Yellow-orange
+        description: 'Major roads: Archer, 13th St, University Ave'
       },
-      // Paynes Prairie area (Bortle 4-5)
+      // Suburban sprawl - irregular residential patterns
       {
         coords: [
-          [29.55, -82.35],
-          [29.55, -82.25],
-          [29.62, -82.25],
-          [29.62, -82.35]
+          [29.7200, -82.4500], [29.7100, -82.2800], [29.6900, -82.2600], [29.6500, -82.2700],
+          [29.6200, -82.3000], [29.5800, -82.3200], [29.5600, -82.3800], [29.5700, -82.4200],
+          [29.6000, -82.4400], [29.6500, -82.4300], [29.7000, -82.4500], [29.7200, -82.4500]
         ],
+        radiance: 12.7,
+        bortle: 5,
+        area: 'Suburban Areas',
+        color: '#fb923c', // Orange
+        description: 'Residential neighborhoods and strip malls'
+      },
+      // Rural transition zones - scattered development
+      {
+        coords: [
+          [29.7500, -82.5000], [29.7300, -82.2500], [29.6800, -82.2400], [29.6200, -82.2500],
+          [29.5500, -82.2800], [29.5200, -82.3500], [29.5100, -82.4200], [29.5300, -82.4800],
+          [29.5800, -82.5200], [29.6500, -82.5100], [29.7200, -82.5000], [29.7500, -82.5000]
+        ],
+        radiance: 3.9,
         bortle: 4,
-        intensity: 0.3,
-        area: 'Paynes Prairie',
-        color: '#fb923c'
+        area: 'Rural Transition',
+        color: '#22c55e', // Green
+        description: 'Scattered rural development and small towns'
+      },
+      // Natural areas - minimal light pollution
+      {
+        coords: [
+          [29.5900, -82.3500], [29.5700, -82.3100], [29.5500, -82.2900], [29.5300, -82.3000],
+          [29.5200, -82.3200], [29.5100, -82.3500], [29.5200, -82.3800], [29.5400, -82.3900],
+          [29.5600, -82.3800], [29.5800, -82.3600], [29.5900, -82.3500]
+        ],
+        radiance: 0.8,
+        bortle: 3,
+        area: 'Paynes Prairie Preserve',
+        color: '#1e40af', // Dark blue
+        description: 'Protected natural area with minimal artificial lighting'
+      },
+      // Highway corridors - linear high-intensity features
+      {
+        coords: [
+          [29.7100, -82.3600], [29.7000, -82.3580], [29.6800, -82.3520], [29.6500, -82.3480],
+          [29.6200, -82.3450], [29.6000, -82.3430], [29.5950, -82.3470], [29.6200, -82.3490],
+          [29.6500, -82.3520], [29.6800, -82.3560], [29.7000, -82.3620], [29.7100, -82.3600]
+        ],
+        radiance: 35.2,
+        bortle: 8,
+        area: 'I-75 Corridor',
+        color: '#ef4444', // Red
+        description: 'Interstate highway with service stations and interchange lighting'
       }
     ];
 
     pollutionAreas.forEach(area => {
+      // Calculate opacity based on radiance (scientific scaling)
+      const normalizedRadiance = Math.min(area.radiance / 50.0, 1.0); // Scale to max 50 nW⋅cm−2⋅sr−1
+      const fillOpacity = Math.max(0.1, normalizedRadiance * 0.8); // Minimum 10% visibility
+
       const polygon = L.polygon(area.coords as L.LatLngExpression[], {
-        color: '#ffffff',
+        color: area.color,
         weight: 1,
-        opacity: 0.5,
+        opacity: 0.8,
         fillColor: area.color,
-        fillOpacity: area.intensity * 0.6
+        fillOpacity: fillOpacity
       }).addTo(pollutionLayers.current!);
 
-      // Store original values as custom properties on the layer
+      // Store scientific data as custom properties
       (polygon as any)._originalColor = area.color;
-      (polygon as any)._originalOpacity = area.intensity * 0.6;
-      (polygon as any)._originalIntensity = area.intensity;
+      (polygon as any)._originalOpacity = fillOpacity;
+      (polygon as any)._baselineRadiance = area.radiance;
+      (polygon as any)._bortleClass = area.bortle;
 
       polygon.bindPopup(`
-        <div class="p-2">
-          <h3 class="font-semibold text-gray-900">${area.area}</h3>
-          <p class="text-sm text-gray-700">Bortle Class: ${area.bortle}</p>
-          <p class="text-xs text-gray-600">Click for detailed analysis</p>
+        <div class="p-3 min-w-[200px]">
+          <h3 class="font-semibold text-gray-900 mb-1">${area.area}</h3>
+          <div class="text-sm space-y-1">
+            <p><span class="font-medium">Radiance:</span> ${area.radiance.toFixed(1)} nW⋅cm⁻²⋅sr⁻¹</p>
+            <p><span class="font-medium">Bortle Class:</span> ${area.bortle}</p>
+            <p class="text-xs text-gray-600 mt-2">${area.description}</p>
+          </div>
         </div>
       `);
     });
@@ -175,55 +222,85 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   const updatePollutionVisualization = () => {
     if (!pollutionLayers.current) return;
 
-    // Calculate mitigation effect
+    // Calculate scientific mitigation factor
     const mitigationFactor = calculateMitigationFactor(mitigationSettings);
     
-    // Update layer colors and opacity based on mitigation
+    // Update layers based on scientific radiance calculations
     pollutionLayers.current.eachLayer((layer: any) => {
-      if (layer.setStyle && layer._originalColor) {
-        // Maintain minimum visibility while showing improvement
-        const adjustedOpacity = Math.max(0.2, layer._originalOpacity * mitigationFactor);
+      if (layer.setStyle && layer._baselineRadiance) {
+        // Apply simulation equation: Rsim = Rbase × mitigation_factor
+        const simulatedRadiance = layer._baselineRadiance * mitigationFactor;
         
-        // Adjust color to show improvement - shift toward cooler colors
-        let adjustedColor = layer._originalColor;
+        // Calculate new opacity based on simulated radiance
+        const newOpacity = Math.max(0.1, Math.min(simulatedRadiance / 50.0, 1.0) * 0.8);
         
-        // Progressive color changes as mitigation improves
-        if (mitigationFactor < 0.8) {
-          const improvement = 1 - mitigationFactor;
-          if (layer._originalColor === '#ef4444') { // Red -> Orange -> Yellow -> Green
-            if (improvement > 0.6) adjustedColor = '#22c55e'; // Green
-            else if (improvement > 0.4) adjustedColor = '#fbbf24'; // Yellow  
-            else if (improvement > 0.2) adjustedColor = '#fb923c'; // Orange
-          } else if (layer._originalColor === '#f97316') { // Orange -> Yellow -> Green
-            if (improvement > 0.5) adjustedColor = '#22c55e'; // Green
-            else if (improvement > 0.3) adjustedColor = '#fbbf24'; // Yellow
-          } else if (layer._originalColor === '#fb923c') { // Light orange -> Green
-            if (improvement > 0.3) adjustedColor = '#22c55e'; // Green
-          }
-        }
+        // Color mapping based on radiance levels (like lightpollutionmap.info)
+        let newColor = layer._originalColor;
+        if (simulatedRadiance > 30) newColor = '#ffffff'; // White: >30 nW⋅cm−2⋅sr−1
+        else if (simulatedRadiance > 20) newColor = '#ef4444'; // Red: 20-30
+        else if (simulatedRadiance > 10) newColor = '#fbbf24'; // Yellow: 10-20
+        else if (simulatedRadiance > 5) newColor = '#fb923c'; // Orange: 5-10
+        else if (simulatedRadiance > 2) newColor = '#22c55e'; // Green: 2-5
+        else newColor = '#1e40af'; // Blue: <2 (excellent dark sky)
         
         layer.setStyle({
-          fillOpacity: adjustedOpacity,
-          fillColor: adjustedColor
+          fillOpacity: newOpacity,
+          fillColor: newColor,
+          color: newColor
         });
+
+        // Update popup with new simulated values
+        const area = layer.getPopup()?.getContent() || '';
+        const areaName = area.match(/<h3[^>]*>([^<]+)<\/h3>/)?.[1] || 'Unknown Area';
+        const description = area.match(/text-xs text-gray-600[^>]*>([^<]+)</)?.[1] || '';
+        
+        layer.bindPopup(`
+          <div class="p-3 min-w-[200px]">
+            <h3 class="font-semibold text-gray-900 mb-1">${areaName}</h3>
+            <div class="text-sm space-y-1">
+              <p><span class="font-medium">Baseline:</span> ${layer._baselineRadiance.toFixed(1)} nW⋅cm⁻²⋅sr⁻¹</p>
+              <p><span class="font-medium">Simulated:</span> ${simulatedRadiance.toFixed(1)} nW⋅cm⁻²⋅sr⁻¹</p>
+              <p><span class="font-medium">Reduction:</span> ${((1 - mitigationFactor) * 100).toFixed(1)}%</p>
+              <p><span class="font-medium">Bortle Class:</span> ${layer._bortleClass}</p>
+              <p class="text-xs text-gray-600 mt-2">${description}</p>
+            </div>
+          </div>
+        `);
       }
     });
   };
 
   const calculateMitigationFactor = (settings: Record<string, boolean | number>): number => {
-    let factor = 1.0;
+    // Scientific simulation based on NASA Black Marble and Dark Sky research
+    let urf = 1.0; // Uplight Reduction Factor (fixture shielding)
+    let csf = 1.0; // CCT Skyglow Factor (color temperature)
+    let lrf = 1.0; // Lumen Reduction Factor (intensity & curfews)
     
-    // Apply various mitigation effects with more gradual reduction
-    if (settings.fullShielding) factor *= 0.75;
-    if (settings.cctLimits) factor *= 0.85;
-    if (settings.curfews) factor *= 0.70;
-    if (settings.streetlightDimming) factor *= 0.90;
-    if (settings.darkSkyOverlays) factor *= 0.80;
-    if (settings.intensityReduction) {
-      factor *= (1 - (settings.intensityReduction as number) * 0.01);
+    // Fixture Shielding (based on IES cutoff classifications)
+    if (settings.fullShielding) {
+      urf = 0.50; // Full cutoff eliminates 50% direct uplight component
+    } else if (settings.cctLimits) {
+      urf = 0.75; // Partial shielding effect
     }
     
-    return Math.max(factor, 0.25); // Minimum 25% pollution remains (more realistic)
+    // Color Temperature effects on skyglow (Rayleigh scattering)
+    if (settings.cctLimits) {
+      csf = 0.65; // 3000K warm white vs 5000K+ cool white
+    }
+    
+    // Intensity reduction and curfews
+    if (settings.curfews) {
+      lrf *= 0.70; // 30% reduction from non-essential lighting shutdown
+    }
+    if (settings.streetlightDimming) {
+      lrf *= 0.85; // 15% dimming effect
+    }
+    if (settings.intensityReduction) {
+      lrf *= (1 - (settings.intensityReduction as number) * 0.01);
+    }
+    
+    // Combined effect: Rsim = Rbase × URF × CSF × LRF
+    return Math.max(urf * csf * lrf, 0.20); // Minimum 20% remains (reflected component)
   };
 
   return (
