@@ -61,117 +61,181 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     // Clear existing layers
     pollutionLayers.current.clearLayers();
 
-    // Realistic light pollution data with organic shapes based on NASA Black Marble VNP46A2 patterns
+    // Realistic light pollution data with organic shapes
     const pollutionAreas = [
-      // Urban core - high intensity, organic city shape
+      // Gainesville urban core (Bortle 8-9) - Downtown area with irregular boundaries
       {
         coords: [
-          [29.6720, -82.3400], [29.6710, -82.3350], [29.6650, -82.3200], [29.6590, -82.3150],
-          [29.6500, -82.3200], [29.6450, -82.3280], [29.6400, -82.3350], [29.6420, -82.3420],
-          [29.6480, -82.3480], [29.6580, -82.3500], [29.6650, -82.3480], [29.6720, -82.3400]
+          [29.6598, -82.3420],
+          [29.6612, -82.3380],
+          [29.6645, -82.3250],
+          [29.6680, -82.3180],
+          [29.6695, -82.3150],
+          [29.6710, -82.3140],
+          [29.6720, -82.3160],
+          [29.6735, -82.3180],
+          [29.6740, -82.3220],
+          [29.6730, -82.3280],
+          [29.6720, -82.3320],
+          [29.6705, -82.3380],
+          [29.6685, -82.3420],
+          [29.6650, -82.3450],
+          [29.6620, -82.3440]
         ],
-        radiance: 45.8, // nW⋅cm−2⋅sr−1 - typical urban core
         bortle: 9,
-        area: 'Gainesville Urban Core',
-        color: '#ffffff', // White for highest pollution
-        description: 'Downtown and University of Florida campus area'
+        intensity: 0.9,
+        area: 'Gainesville Downtown Core',
+        color: '#ef4444'
       },
-      // Main commercial corridors - irregular shapes following roads
+      // University of Florida area (Bortle 7-8) - Campus and surrounding dense development
       {
         coords: [
-          [29.6900, -82.3800], [29.6850, -82.3200], [29.6650, -82.3100], [29.6400, -82.3150],
-          [29.6200, -82.3300], [29.6100, -82.3600], [29.6200, -82.3900], [29.6500, -82.4100],
-          [29.6800, -82.4000], [29.6900, -82.3800]
+          [29.6480, -82.3580],
+          [29.6520, -82.3520],
+          [29.6560, -82.3480],
+          [29.6580, -82.3420],
+          [29.6590, -82.3380],
+          [29.6570, -82.3340],
+          [29.6540, -82.3300],
+          [29.6500, -82.3280],
+          [29.6460, -82.3300],
+          [29.6430, -82.3340],
+          [29.6420, -82.3380],
+          [29.6430, -82.3420],
+          [29.6450, -82.3480],
+          [29.6470, -82.3540]
         ],
-        radiance: 28.3,
-        bortle: 7,
-        area: 'Commercial Corridors',
-        color: '#fbbf24', // Yellow-orange
-        description: 'Major roads: Archer, 13th St, University Ave'
-      },
-      // Suburban sprawl - irregular residential patterns
-      {
-        coords: [
-          [29.7200, -82.4500], [29.7100, -82.2800], [29.6900, -82.2600], [29.6500, -82.2700],
-          [29.6200, -82.3000], [29.5800, -82.3200], [29.5600, -82.3800], [29.5700, -82.4200],
-          [29.6000, -82.4400], [29.6500, -82.4300], [29.7000, -82.4500], [29.7200, -82.4500]
-        ],
-        radiance: 12.7,
-        bortle: 5,
-        area: 'Suburban Areas',
-        color: '#fb923c', // Orange
-        description: 'Residential neighborhoods and strip malls'
-      },
-      // Rural transition zones - scattered development
-      {
-        coords: [
-          [29.7500, -82.5000], [29.7300, -82.2500], [29.6800, -82.2400], [29.6200, -82.2500],
-          [29.5500, -82.2800], [29.5200, -82.3500], [29.5100, -82.4200], [29.5300, -82.4800],
-          [29.5800, -82.5200], [29.6500, -82.5100], [29.7200, -82.5000], [29.7500, -82.5000]
-        ],
-        radiance: 3.9,
-        bortle: 4,
-        area: 'Rural Transition',
-        color: '#22c55e', // Green
-        description: 'Scattered rural development and small towns'
-      },
-      // Natural areas - minimal light pollution
-      {
-        coords: [
-          [29.5900, -82.3500], [29.5700, -82.3100], [29.5500, -82.2900], [29.5300, -82.3000],
-          [29.5200, -82.3200], [29.5100, -82.3500], [29.5200, -82.3800], [29.5400, -82.3900],
-          [29.5600, -82.3800], [29.5800, -82.3600], [29.5900, -82.3500]
-        ],
-        radiance: 0.8,
-        bortle: 3,
-        area: 'Paynes Prairie Preserve',
-        color: '#1e40af', // Dark blue
-        description: 'Protected natural area with minimal artificial lighting'
-      },
-      // Highway corridors - I-75 runs north-south on western side of Gainesville
-      {
-        coords: [
-          [29.7200, -82.4100], [29.7150, -82.4080], [29.7000, -82.4050], [29.6800, -82.4020],
-          [29.6600, -82.4000], [29.6400, -82.3980], [29.6200, -82.3960], [29.6000, -82.3940],
-          [29.5800, -82.3920], [29.5750, -82.3960], [29.5800, -82.3980], [29.6000, -82.4000],
-          [29.6200, -82.4020], [29.6400, -82.4040], [29.6600, -82.4060], [29.6800, -82.4080],
-          [29.7000, -82.4110], [29.7150, -82.4140], [29.7200, -82.4100]
-        ],
-        radiance: 35.2,
         bortle: 8,
-        area: 'I-75 Corridor',
-        color: '#ef4444', // Red
-        description: 'Interstate highway with service stations and interchange lighting'
+        intensity: 0.8,
+        area: 'University of Florida Campus',
+        color: '#f97316'
+      },
+      // West Gainesville suburban sprawl (Bortle 6-7)
+      {
+        coords: [
+          [29.6200, -82.4200],
+          [29.6350, -82.4100],
+          [29.6450, -82.3950],
+          [29.6520, -82.3800],
+          [29.6580, -82.3700],
+          [29.6620, -82.3650],
+          [29.6650, -82.3620],
+          [29.6680, -82.3600],
+          [29.6700, -82.3580],
+          [29.6720, -82.3620],
+          [29.6740, -82.3680],
+          [29.6750, -82.3750],
+          [29.6740, -82.3820],
+          [29.6720, -82.3890],
+          [29.6680, -82.3950],
+          [29.6620, -82.4020],
+          [29.6550, -82.4080],
+          [29.6480, -82.4120],
+          [29.6400, -82.4160],
+          [29.6320, -82.4180],
+          [29.6250, -82.4200]
+        ],
+        bortle: 6,
+        intensity: 0.6,
+        area: 'West Gainesville Suburbs',
+        color: '#fb923c'
+      },
+      // East Gainesville residential (Bortle 5-6)
+      {
+        coords: [
+          [29.6400, -82.2800],
+          [29.6480, -82.2750],
+          [29.6560, -82.2720],
+          [29.6620, -82.2700],
+          [29.6680, -82.2720],
+          [29.6720, -82.2750],
+          [29.6750, -82.2800],
+          [29.6780, -82.2860],
+          [29.6800, -82.2920],
+          [29.6810, -82.2980],
+          [29.6800, -82.3040],
+          [29.6780, -82.3100],
+          [29.6750, -82.3140],
+          [29.6700, -82.3120],
+          [29.6650, -82.3100],
+          [29.6600, -82.3080],
+          [29.6550, -82.3050],
+          [29.6500, -82.3020],
+          [29.6450, -82.2980],
+          [29.6420, -82.2920],
+          [29.6400, -82.2860]
+        ],
+        bortle: 5,
+        intensity: 0.5,
+        area: 'East Gainesville Residential',
+        color: '#fbbf24'
+      },
+      // Commercial corridors along major roads (Bortle 7)
+      {
+        coords: [
+          [29.6300, -82.3600],
+          [29.6320, -82.3580],
+          [29.6350, -82.3550],
+          [29.6380, -82.3520],
+          [29.6420, -82.3480],
+          [29.6460, -82.3440],
+          [29.6500, -82.3400],
+          [29.6520, -82.3420],
+          [29.6480, -82.3460],
+          [29.6440, -82.3500],
+          [29.6400, -82.3540],
+          [29.6360, -82.3580],
+          [29.6320, -82.3620]
+        ],
+        bortle: 7,
+        intensity: 0.7,
+        area: 'Commercial Strip - Archer Road',
+        color: '#f97316'
+      },
+      // Paynes Prairie area (Bortle 3-4) - Natural preserve with minimal light
+      {
+        coords: [
+          [29.5800, -82.3600],
+          [29.5850, -82.3400],
+          [29.5900, -82.3200],
+          [29.5950, -82.3000],
+          [29.6000, -82.2900],
+          [29.6050, -82.2850],
+          [29.6100, -82.2900],
+          [29.6120, -82.3000],
+          [29.6100, -82.3100],
+          [29.6050, -82.3200],
+          [29.6000, -82.3300],
+          [29.5950, -82.3400],
+          [29.5900, -82.3500],
+          [29.5850, -82.3550]
+        ],
+        bortle: 3,
+        intensity: 0.25,
+        area: 'Paynes Prairie Preserve',
+        color: '#22c55e'
       }
     ];
 
     pollutionAreas.forEach(area => {
-      // Calculate opacity based on radiance (scientific scaling)
-      const normalizedRadiance = Math.min(area.radiance / 50.0, 1.0); // Scale to max 50 nW⋅cm−2⋅sr−1
-      const fillOpacity = Math.max(0.1, normalizedRadiance * 0.8); // Minimum 10% visibility
-
       const polygon = L.polygon(area.coords as L.LatLngExpression[], {
-        color: area.color,
+        color: '#ffffff',
         weight: 1,
-        opacity: 0.8,
+        opacity: 0.5,
         fillColor: area.color,
-        fillOpacity: fillOpacity
+        fillOpacity: area.intensity * 0.6
       }).addTo(pollutionLayers.current!);
 
-      // Store scientific data as custom properties
+      // Store original values as custom properties on the layer
       (polygon as any)._originalColor = area.color;
-      (polygon as any)._originalOpacity = fillOpacity;
-      (polygon as any)._baselineRadiance = area.radiance;
-      (polygon as any)._bortleClass = area.bortle;
+      (polygon as any)._originalOpacity = area.intensity * 0.6;
+      (polygon as any)._originalIntensity = area.intensity;
 
       polygon.bindPopup(`
-        <div class="p-3 min-w-[200px]">
-          <h3 class="font-semibold text-gray-900 mb-1">${area.area}</h3>
-          <div class="text-sm space-y-1">
-            <p><span class="font-medium">Radiance:</span> ${area.radiance.toFixed(1)} nW⋅cm⁻²⋅sr⁻¹</p>
-            <p><span class="font-medium">Bortle Class:</span> ${area.bortle}</p>
-            <p class="text-xs text-gray-600 mt-2">${area.description}</p>
-          </div>
+        <div class="p-2">
+          <h3 class="font-semibold text-gray-900">${area.area}</h3>
+          <p class="text-sm text-gray-700">Bortle Class: ${area.bortle}</p>
+          <p class="text-xs text-gray-600">Click for detailed analysis</p>
         </div>
       `);
     });
@@ -224,85 +288,55 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   const updatePollutionVisualization = () => {
     if (!pollutionLayers.current) return;
 
-    // Calculate scientific mitigation factor
+    // Calculate mitigation effect
     const mitigationFactor = calculateMitigationFactor(mitigationSettings);
     
-    // Update layers based on scientific radiance calculations
+    // Update layer colors and opacity based on mitigation
     pollutionLayers.current.eachLayer((layer: any) => {
-      if (layer.setStyle && layer._baselineRadiance) {
-        // Apply simulation equation: Rsim = Rbase × mitigation_factor
-        const simulatedRadiance = layer._baselineRadiance * mitigationFactor;
+      if (layer.setStyle && layer._originalColor) {
+        // Maintain minimum visibility while showing improvement
+        const adjustedOpacity = Math.max(0.2, layer._originalOpacity * mitigationFactor);
         
-        // Calculate new opacity based on simulated radiance
-        const newOpacity = Math.max(0.1, Math.min(simulatedRadiance / 50.0, 1.0) * 0.8);
+        // Adjust color to show improvement - shift toward cooler colors
+        let adjustedColor = layer._originalColor;
         
-        // Color mapping based on radiance levels (like lightpollutionmap.info)
-        let newColor = layer._originalColor;
-        if (simulatedRadiance > 30) newColor = '#ffffff'; // White: >30 nW⋅cm−2⋅sr−1
-        else if (simulatedRadiance > 20) newColor = '#ef4444'; // Red: 20-30
-        else if (simulatedRadiance > 10) newColor = '#fbbf24'; // Yellow: 10-20
-        else if (simulatedRadiance > 5) newColor = '#fb923c'; // Orange: 5-10
-        else if (simulatedRadiance > 2) newColor = '#22c55e'; // Green: 2-5
-        else newColor = '#1e40af'; // Blue: <2 (excellent dark sky)
+        // Progressive color changes as mitigation improves
+        if (mitigationFactor < 0.8) {
+          const improvement = 1 - mitigationFactor;
+          if (layer._originalColor === '#ef4444') { // Red -> Orange -> Yellow -> Green
+            if (improvement > 0.6) adjustedColor = '#22c55e'; // Green
+            else if (improvement > 0.4) adjustedColor = '#fbbf24'; // Yellow  
+            else if (improvement > 0.2) adjustedColor = '#fb923c'; // Orange
+          } else if (layer._originalColor === '#f97316') { // Orange -> Yellow -> Green
+            if (improvement > 0.5) adjustedColor = '#22c55e'; // Green
+            else if (improvement > 0.3) adjustedColor = '#fbbf24'; // Yellow
+          } else if (layer._originalColor === '#fb923c') { // Light orange -> Green
+            if (improvement > 0.3) adjustedColor = '#22c55e'; // Green
+          }
+        }
         
         layer.setStyle({
-          fillOpacity: newOpacity,
-          fillColor: newColor,
-          color: newColor
+          fillOpacity: adjustedOpacity,
+          fillColor: adjustedColor
         });
-
-        // Update popup with new simulated values
-        const area = layer.getPopup()?.getContent() || '';
-        const areaName = area.match(/<h3[^>]*>([^<]+)<\/h3>/)?.[1] || 'Unknown Area';
-        const description = area.match(/text-xs text-gray-600[^>]*>([^<]+)</)?.[1] || '';
-        
-        layer.bindPopup(`
-          <div class="p-3 min-w-[200px]">
-            <h3 class="font-semibold text-gray-900 mb-1">${areaName}</h3>
-            <div class="text-sm space-y-1">
-              <p><span class="font-medium">Baseline:</span> ${layer._baselineRadiance.toFixed(1)} nW⋅cm⁻²⋅sr⁻¹</p>
-              <p><span class="font-medium">Simulated:</span> ${simulatedRadiance.toFixed(1)} nW⋅cm⁻²⋅sr⁻¹</p>
-              <p><span class="font-medium">Reduction:</span> ${((1 - mitigationFactor) * 100).toFixed(1)}%</p>
-              <p><span class="font-medium">Bortle Class:</span> ${layer._bortleClass}</p>
-              <p class="text-xs text-gray-600 mt-2">${description}</p>
-            </div>
-          </div>
-        `);
       }
     });
   };
 
   const calculateMitigationFactor = (settings: Record<string, boolean | number>): number => {
-    // Scientific simulation based on NASA Black Marble and Dark Sky research
-    let urf = 1.0; // Uplight Reduction Factor (fixture shielding)
-    let csf = 1.0; // CCT Skyglow Factor (color temperature)
-    let lrf = 1.0; // Lumen Reduction Factor (intensity & curfews)
+    let factor = 1.0;
     
-    // Fixture Shielding (based on IES cutoff classifications)
-    if (settings.fullShielding) {
-      urf = 0.50; // Full cutoff eliminates 50% direct uplight component
-    } else if (settings.cctLimits) {
-      urf = 0.75; // Partial shielding effect
-    }
-    
-    // Color Temperature effects on skyglow (Rayleigh scattering)
-    if (settings.cctLimits) {
-      csf = 0.65; // 3000K warm white vs 5000K+ cool white
-    }
-    
-    // Intensity reduction and curfews
-    if (settings.curfews) {
-      lrf *= 0.70; // 30% reduction from non-essential lighting shutdown
-    }
-    if (settings.streetlightDimming) {
-      lrf *= 0.85; // 15% dimming effect
-    }
+    // Apply various mitigation effects with more gradual reduction
+    if (settings.fullShielding) factor *= 0.75;
+    if (settings.cctLimits) factor *= 0.85;
+    if (settings.curfews) factor *= 0.70;
+    if (settings.streetlightDimming) factor *= 0.90;
+    if (settings.darkSkyOverlays) factor *= 0.80;
     if (settings.intensityReduction) {
-      lrf *= (1 - (settings.intensityReduction as number) * 0.01);
+      factor *= (1 - (settings.intensityReduction as number) * 0.01);
     }
     
-    // Combined effect: Rsim = Rbase × URF × CSF × LRF
-    return Math.max(urf * csf * lrf, 0.20); // Minimum 20% remains (reflected component)
+    return Math.max(factor, 0.25); // Minimum 25% pollution remains (more realistic)
   };
 
   return (
