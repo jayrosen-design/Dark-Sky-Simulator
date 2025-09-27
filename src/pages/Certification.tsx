@@ -197,7 +197,7 @@ const Certification = () => {
                       <li>• Decorative lighting visible from outside</li>
                       <li>• Searchlights and sky beams</li>
                       <li>• Excessive illumination levels</li>
-                      <li>• Blue-rich lighting (>4000K)</li>
+                      <li>• Blue-rich lighting (&gt;4000K)</li>
                     </ul>
                   </div>
                 </div>
