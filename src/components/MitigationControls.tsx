@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import MitigationControlModal from './MitigationControlModal';
 import { 
   Shield, 
   Lightbulb, 
@@ -14,7 +16,8 @@ import {
   Car,
   RotateCcw,
   Users,
-  BarChart3
+  BarChart3,
+  Info
 } from 'lucide-react';
 
 interface MitigationControlsProps {
@@ -26,6 +29,7 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
   settings, 
   onSettingChange
 }) => {
+  const [selectedControl, setSelectedControl] = useState<string | null>(null);
   const controlSections = [
     {
       title: 'Lighting Policy Changes',
@@ -162,6 +166,7 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
   };
 
   return (
+    <>
     <div className="h-full overflow-y-auto p-4 space-y-4 pb-6">
 
       {controlSections.map((section) => (
@@ -185,6 +190,14 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
                       <label className="text-sm font-medium text-foreground">
                         {control.label}
                       </label>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-5 w-5 p-0 hover:bg-primary/10"
+                        onClick={() => setSelectedControl(control.key)}
+                      >
+                        <Info className="h-3 w-3 text-muted-foreground hover:text-primary" />
+                      </Button>
                       <Badge 
                         variant="outline" 
                         className={`text-xs border-${getImpactColor(control.impact)}/50 text-${getImpactColor(control.impact)}`}
@@ -242,6 +255,13 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
         </p>
         </Card>
     </div>
+    
+    <MitigationControlModal
+      isOpen={selectedControl !== null}
+      onClose={() => setSelectedControl(null)}
+      controlKey={selectedControl || ''}
+    />
+    </>
   );
 };
 
