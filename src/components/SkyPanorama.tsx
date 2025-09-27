@@ -121,8 +121,30 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
         </Suspense>
       </Canvas>
       
-      {/* Area Selector Dropdown */}
-      <div className="absolute top-4 left-4 z-[1001]">
+      {/* Zoom Controls - Left Side */}
+      <div className="absolute top-4 left-4 z-[1001] flex flex-col gap-1">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleZoomIn}
+          className="h-8 w-8 bg-card/95 backdrop-blur-sm border-primary/20 hover:bg-card/100 text-foreground"
+          title="Zoom In"
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleZoomOut}
+          className="h-8 w-8 bg-card/95 backdrop-blur-sm border-primary/20 hover:bg-card/100 text-foreground"
+          title="Zoom Out"
+        >
+          <Minus className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {/* Area Selector Dropdown - Right Side */}
+      <div className="absolute top-4 right-4 z-[1001]">
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -133,7 +155,7 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
           </button>
           
           {dropdownOpen && (
-            <div className="absolute top-full left-0 mt-1 bg-card border border-primary/20 rounded-lg shadow-xl z-[1002] min-w-full">
+            <div className="absolute top-full right-0 mt-1 bg-card border border-primary/20 rounded-lg shadow-xl z-[1002] min-w-full">
               {Object.entries(areas).map(([key, area]) => (
                 <button
                   key={key}
@@ -173,27 +195,6 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
         </div>
       </div>
 
-      {/* Zoom Controls */}
-      <div className="absolute top-4 right-4 z-[1001] flex flex-col gap-1">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleZoomIn}
-          className="h-8 w-8 bg-card/95 backdrop-blur-sm border-primary/20 hover:bg-card/100 text-foreground"
-          title="Zoom In"
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleZoomOut}
-          className="h-8 w-8 bg-card/95 backdrop-blur-sm border-primary/20 hover:bg-card/100 text-foreground"
-          title="Zoom Out"
-        >
-          <Minus className="h-4 w-4" />
-        </Button>
-      </div>
 
       {/* Controls hint */}
       <div className="absolute bottom-4 right-4 bg-card/90 backdrop-blur-sm rounded-lg p-2 border border-primary/20 z-[1000]">
