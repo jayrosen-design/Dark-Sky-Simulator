@@ -92,7 +92,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-space">
-      <div className="w-full max-w-7xl mx-auto space-y-4 p-4 pb-8">{/* Added max-width and centering */}
+      <div className="w-full space-y-4 p-2 sm:p-4 pb-8">{/* Reduced padding on mobile, wider on desktop */}
         {/* Header */}
         <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
           <div className="relative">
