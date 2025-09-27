@@ -31,6 +31,30 @@ const Index = () => {
     monitoringProgram: false,
   });
 
+  // Calculate improved Bortle classes for each area
+  const calculateImprovedBortle = (baseBortle: number) => {
+    let factor = 1.0;
+    if (mitigationSettings.fullShielding) factor *= 0.75;
+    if (mitigationSettings.cctLimits) factor *= 0.85;
+    if (mitigationSettings.curfews) factor *= 0.70;
+    if (mitigationSettings.streetlightDimming) factor *= 0.90;
+    if (mitigationSettings.darkSkyOverlays) factor *= 0.80;
+    if (mitigationSettings.intensityReduction) {
+      factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
+    }
+    
+    const improvement = 1 - Math.max(factor, 0.25);
+    const maxImprovement = baseBortle <= 4 ? 2 : baseBortle <= 6 ? 3 : 4;
+    const bortleImprovement = Math.floor(improvement * maxImprovement);
+    return Math.max(1, baseBortle - bortleImprovement);
+  };
+
+  const areas = {
+    downtown: { original: 9, improved: calculateImprovedBortle(9) },
+    suburban: { original: 6, improved: calculateImprovedBortle(6) },
+    paynes: { original: 4, improved: calculateImprovedBortle(4) },
+  };
+
   const handleSettingChange = (key: string, value: boolean | number) => {
     setMitigationSettings(prev => ({
       ...prev,
@@ -89,7 +113,12 @@ const Index = () => {
               <Map className="w-4 h-4 text-primary" />
               <div>
                 <div className="font-medium text-foreground text-xs">Gainesville Downtown</div>
-                <div className="text-muted-foreground text-xs">Bortle 9</div>
+                <div className="text-muted-foreground text-xs">
+                  Bortle {areas.downtown.original}
+                  {areas.downtown.improved !== areas.downtown.original && (
+                    <span className="text-success"> → {areas.downtown.improved}</span>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -98,7 +127,12 @@ const Index = () => {
               <Star className="w-4 h-4 text-mitigation" />
               <div>
                 <div className="font-medium text-foreground text-xs">Suburban Gainesville</div>
-                <div className="text-muted-foreground text-xs">Bortle 6</div>
+                <div className="text-muted-foreground text-xs">
+                  Bortle {areas.suburban.original}
+                  {areas.suburban.improved !== areas.suburban.original && (
+                    <span className="text-success"> → {areas.suburban.improved}</span>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -107,7 +141,12 @@ const Index = () => {
               <BarChart3 className="w-4 h-4 text-success" />
               <div>
                 <div className="font-medium text-foreground text-xs">Paynes Prairie</div>
-                <div className="text-muted-foreground text-xs">Bortle 4</div>
+                <div className="text-muted-foreground text-xs">
+                  Bortle {areas.paynes.original}
+                  {areas.paynes.improved !== areas.paynes.original && (
+                    <span className="text-success"> → {areas.paynes.improved}</span>
+                  )}
+                </div>
               </div>
             </div>
 
