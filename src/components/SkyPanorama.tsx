@@ -23,7 +23,7 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
     'downtown': { name: 'Gainesville Downtown', baseBortle: 9 },
   };
 
-  // Calculate all area Bortle classes based on mitigation
+  // Calculate all area Bortle classes based on mitigation (matching progress dashboard)
   const allAreaBortleClasses = useMemo(() => {
     const calculateBortleForArea = (baseBortle: number) => {
       let factor = 1.0;
@@ -36,10 +36,12 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
         factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
       }
       
-      const improvement = 1 - Math.max(factor, 0.25);
-      const maxImprovement = baseBortle <= 4 ? 2 : baseBortle <= 6 ? 3 : 4;
-      const bortleImprovement = Math.floor(improvement * maxImprovement);
-      return Math.max(1, baseBortle - bortleImprovement);
+      // More aggressive improvement calculation to match visibility calculations
+      const improvement = 1 - Math.max(factor, 0.15); // Lower minimum for better improvements
+      const bortleReduction = improvement * (baseBortle - 1); // Can improve all the way to Bortle 1
+      const newBortle = Math.max(1, Math.round(baseBortle - bortleReduction));
+      
+      return newBortle;
     };
 
     return {

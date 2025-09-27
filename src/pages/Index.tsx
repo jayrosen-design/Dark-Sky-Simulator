@@ -31,7 +31,7 @@ const Index = () => {
     monitoringProgram: false,
   });
 
-  // Calculate improved Bortle classes for each area
+  // Calculate improved Bortle classes for each area (more aggressive improvements)
   const calculateImprovedBortle = (baseBortle: number) => {
     let factor = 1.0;
     if (mitigationSettings.fullShielding) factor *= 0.75;
@@ -43,10 +43,12 @@ const Index = () => {
       factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
     }
     
-    const improvement = 1 - Math.max(factor, 0.25);
-    const maxImprovement = baseBortle <= 4 ? 2 : baseBortle <= 6 ? 3 : 4;
-    const bortleImprovement = Math.floor(improvement * maxImprovement);
-    return Math.max(1, baseBortle - bortleImprovement);
+    // More aggressive improvement calculation to match visibility calculations
+    const improvement = 1 - Math.max(factor, 0.15); // Lower minimum for better improvements
+    const bortleReduction = improvement * (baseBortle - 1); // Can improve all the way to Bortle 1
+    const newBortle = Math.max(1, Math.round(baseBortle - bortleReduction));
+    
+    return newBortle;
   };
 
   const areas = {
