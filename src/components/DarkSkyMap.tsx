@@ -125,13 +125,15 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
         const currentFactor = calculateMitigationFactor(mitigationSettings);
         const mitigatedBortle = Math.max(1, Math.round(area.bortle * currentFactor));
         
-        polygon.bindPopup(`
+        const popupContent = `
           <div class="p-2">
             <h3 class="font-semibold text-gray-900">${area.area}</h3>
             <p class="text-sm text-gray-700">Current Bortle Class: ${mitigatedBortle}</p>
             <p class="text-xs text-gray-600">Original: Class ${area.bortle}</p>
           </div>
-        `);
+        `;
+        
+        polygon.setPopupContent(popupContent);
       };
       
       updatePopup();
