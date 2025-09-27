@@ -83,40 +83,30 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Current Status Column */}
-            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/20">
-              <div className="flex items-center gap-2">
-                <Map className="w-4 h-4 text-primary" />
-                <div>
-                  <div className="font-medium text-foreground text-xs">Current Status</div>
-                  <div className="text-muted-foreground text-xs">Bortle 4.5</div>
-                </div>
+            {/* Gainesville Downtown */}
+            <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
+              <Map className="w-4 h-4 text-primary" />
+              <div>
+                <div className="font-medium text-foreground text-xs">Gainesville Downtown</div>
+                <div className="text-muted-foreground text-xs">Bortle 9</div>
               </div>
-              <button
-                onClick={handleReset}
-                className="flex items-center gap-1 px-2 py-1 text-xs bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 text-destructive rounded transition-colors"
-                title="Reset to natural baseline"
-              >
-                <RotateCcw className="w-3 h-3" />
-                Reset
-              </button>
             </div>
 
-            {/* Goal Column */}
+            {/* Suburban Gainesville */}
             <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
               <Star className="w-4 h-4 text-mitigation" />
               <div>
-                <div className="font-medium text-foreground text-xs">Goal</div>
-                <div className="text-muted-foreground text-xs">Dark Sky Status</div>
+                <div className="font-medium text-foreground text-xs">Suburban Gainesville</div>
+                <div className="text-muted-foreground text-xs">Bortle 6</div>
               </div>
             </div>
 
-            {/* Impact Area Column */}
+            {/* Paynes Prairie */}
             <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
               <BarChart3 className="w-4 h-4 text-success" />
               <div>
-                <div className="font-medium text-foreground text-xs">Impact Area</div>
-                <div className="text-muted-foreground text-xs">Alachua County</div>
+                <div className="font-medium text-foreground text-xs">Paynes Prairie</div>
+                <div className="text-muted-foreground text-xs">Bortle 4</div>
               </div>
             </div>
 
@@ -130,13 +120,23 @@ const Index = () => {
           <div className="col-span-12 lg:col-span-3">
             <Card className="h-auto lg:h-full bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
-                <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-                  <Settings className="w-5 h-5 text-primary" />
-                  Mitigation Controls
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Configure reduction strategies
-                </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Settings className="w-5 h-5 text-primary" />
+                    <div>
+                      <h2 className="text-lg font-semibold text-foreground">Mitigation Controls</h2>
+                      <p className="text-sm text-muted-foreground">Configure reduction strategies</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleReset}
+                    className="flex items-center gap-1 px-2 py-1 text-xs bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 text-destructive rounded transition-colors"
+                    title="Reset to natural baseline"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    Reset
+                  </button>
+                </div>
               </div>
               <div className="lg:h-[calc(100%-5rem)]">
                 <MitigationControls 

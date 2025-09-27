@@ -119,36 +119,6 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
       (polygon as any)._originalIntensity = area.intensity;
       (polygon as any)._originalBortle = area.bortle;
       (polygon as any)._areaName = area.area;
-
-      // Calculate center point for label placement
-      const bounds = polygon.getBounds();
-      const center = bounds.getCenter();
-
-      // Create label with area name and Bortle class
-      const updateLabel = () => {
-        const currentFactor = calculateMitigationFactor(mitigationSettings);
-        const mitigatedBortle = Math.max(1, Math.round(area.bortle * currentFactor));
-        
-        if ((polygon as any)._label) {
-          map.current!.removeLayer((polygon as any)._label);
-        }
-
-        const labelIcon = L.divIcon({
-          html: `<div class="bg-card/90 backdrop-blur-sm px-2 py-1 rounded border border-primary/20 text-xs font-medium text-foreground whitespace-nowrap shadow-sm">
-                   <div class="font-semibold">${area.area}</div>
-                   <div>Bortle ${mitigatedBortle}</div>
-                 </div>`,
-          className: 'custom-label',
-          iconSize: [0, 0],
-          iconAnchor: [0, 0]
-        });
-
-        const label = L.marker(center, { icon: labelIcon }).addTo(map.current!);
-        (polygon as any)._label = label;
-      };
-      
-      updateLabel();
-      (polygon as any)._updateLabel = updateLabel;
     });
   };
 
@@ -231,10 +201,6 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
           fillColor: adjustedColor
         });
 
-        // Update label with current Bortle class
-        if (layer._updateLabel) {
-          layer._updateLabel();
-        }
       }
     });
   };
