@@ -1,8 +1,9 @@
-import React, { Suspense, useMemo, useState } from 'react';
+import React, { Suspense, useMemo, useState, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Plus, Minus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface SkyPanoramaProps {
   mitigationSettings: Record<string, boolean | number>;
@@ -16,6 +17,7 @@ interface AreaData {
 const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
   const [selectedArea, setSelectedArea] = useState<string>('paynes-prairie');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const controlsRef = useRef<any>(null);
 
   const areas: Record<string, AreaData> = {
     'paynes-prairie': { name: 'Paynes Prairie', baseBortle: 4 },
@@ -74,6 +76,26 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
     );
   };
 
+  const handleZoomIn = () => {
+    if (controlsRef.current) {
+      const camera = controlsRef.current.object;
+      const currentFov = camera.fov;
+      const newFov = Math.max(15, currentFov - 10); // Min zoom (FOV)
+      camera.fov = newFov;
+      camera.updateProjectionMatrix();
+    }
+  };
+
+  const handleZoomOut = () => {
+    if (controlsRef.current) {
+      const camera = controlsRef.current.object;
+      const currentFov = camera.fov;
+      const newFov = Math.min(120, currentFov + 10); // Max zoom (FOV)
+      camera.fov = newFov;
+      camera.updateProjectionMatrix();
+    }
+  };
+
   return (
     <div className="relative w-full h-full rounded-lg overflow-hidden border border-primary/20 shadow-glow bg-background">
       <Canvas
@@ -88,7 +110,8 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
         <Suspense fallback={null}>
           <PanoramaSphere />
           <OrbitControls
-            enableZoom={false}
+            ref={controlsRef}
+            enableZoom={false} // We'll handle zoom manually with buttons
             enablePan={false}
             enableDamping={true}
             dampingFactor={0.05}
@@ -150,10 +173,32 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
         </div>
       </div>
 
+      {/* Zoom Controls */}
+      <div className="absolute top-4 right-4 z-[1001] flex flex-col gap-1">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleZoomIn}
+          className="h-8 w-8 bg-card/95 backdrop-blur-sm border-primary/20 hover:bg-card/100 text-foreground"
+          title="Zoom In"
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleZoomOut}
+          className="h-8 w-8 bg-card/95 backdrop-blur-sm border-primary/20 hover:bg-card/100 text-foreground"
+          title="Zoom Out"
+        >
+          <Minus className="h-4 w-4" />
+        </Button>
+      </div>
+
       {/* Controls hint */}
       <div className="absolute bottom-4 right-4 bg-card/90 backdrop-blur-sm rounded-lg p-2 border border-primary/20 z-[1000]">
         <div className="text-xs text-muted-foreground">
-          Drag to look around
+          Drag to look around • +/- to zoom
         </div>
       </div>
     </div>
