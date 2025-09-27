@@ -23,30 +23,34 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
     'downtown': { name: 'Gainesville Downtown', baseBortle: 9 },
   };
 
-  // Calculate the current Bortle class for selected area based on mitigation
-  const currentBortleClass = useMemo(() => {
-    const baseArea = areas[selectedArea];
-    const baseBortle = baseArea.baseBortle;
-    
-    // Calculate mitigation factor (same logic as in DarkSkyMap)
-    let factor = 1.0;
-    if (mitigationSettings.fullShielding) factor *= 0.75;
-    if (mitigationSettings.cctLimits) factor *= 0.85;
-    if (mitigationSettings.curfews) factor *= 0.70;
-    if (mitigationSettings.streetlightDimming) factor *= 0.90;
-    if (mitigationSettings.darkSkyOverlays) factor *= 0.80;
-    if (mitigationSettings.intensityReduction) {
-      factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
-    }
-    
-    // Convert factor to Bortle improvement (scaled by base level)
-    const improvement = 1 - Math.max(factor, 0.25);
-    const maxImprovement = baseBortle <= 4 ? 2 : baseBortle <= 6 ? 3 : 4;
-    const bortleImprovement = Math.floor(improvement * maxImprovement);
-    const newBortle = Math.max(1, baseBortle - bortleImprovement);
-    
-    return newBortle;
-  }, [mitigationSettings, selectedArea, areas]);
+  // Calculate all area Bortle classes based on mitigation
+  const allAreaBortleClasses = useMemo(() => {
+    const calculateBortleForArea = (baseBortle: number) => {
+      let factor = 1.0;
+      if (mitigationSettings.fullShielding) factor *= 0.75;
+      if (mitigationSettings.cctLimits) factor *= 0.85;
+      if (mitigationSettings.curfews) factor *= 0.70;
+      if (mitigationSettings.streetlightDimming) factor *= 0.90;
+      if (mitigationSettings.darkSkyOverlays) factor *= 0.80;
+      if (mitigationSettings.intensityReduction) {
+        factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
+      }
+      
+      const improvement = 1 - Math.max(factor, 0.25);
+      const maxImprovement = baseBortle <= 4 ? 2 : baseBortle <= 6 ? 3 : 4;
+      const bortleImprovement = Math.floor(improvement * maxImprovement);
+      return Math.max(1, baseBortle - bortleImprovement);
+    };
+
+    return {
+      'paynes-prairie': calculateBortleForArea(areas['paynes-prairie'].baseBortle),
+      'suburban': calculateBortleForArea(areas['suburban'].baseBortle),
+      'downtown': calculateBortleForArea(areas['downtown'].baseBortle),
+    };
+  }, [mitigationSettings, areas]);
+
+  // Get current Bortle class for selected area
+  const currentBortleClass = allAreaBortleClasses[selectedArea];
 
   const PanoramaSphere = () => {
     const texture = useMemo(() => {
@@ -101,38 +105,20 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
           
           {dropdownOpen && (
             <div className="absolute top-full left-0 mt-1 bg-card border border-primary/20 rounded-lg shadow-xl z-[1002] min-w-full">
-              {Object.entries(areas).map(([key, area]) => {
-                const areaBortle = useMemo(() => {
-                  let factor = 1.0;
-                  if (mitigationSettings.fullShielding) factor *= 0.75;
-                  if (mitigationSettings.cctLimits) factor *= 0.85;
-                  if (mitigationSettings.curfews) factor *= 0.70;
-                  if (mitigationSettings.streetlightDimming) factor *= 0.90;
-                  if (mitigationSettings.darkSkyOverlays) factor *= 0.80;
-                  if (mitigationSettings.intensityReduction) {
-                    factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
-                  }
-                  const improvement = 1 - Math.max(factor, 0.25);
-                  const maxImprovement = area.baseBortle <= 4 ? 2 : area.baseBortle <= 6 ? 3 : 4;
-                  const bortleImprovement = Math.floor(improvement * maxImprovement);
-                  return Math.max(1, area.baseBortle - bortleImprovement);
-                }, [area.baseBortle]);
-
-                return (
-                  <button
-                    key={key}
-                    onClick={() => {
-                      setSelectedArea(key);
-                      setDropdownOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-muted/50 transition-colors first:rounded-t-lg last:rounded-b-lg ${
-                      selectedArea === key ? 'bg-primary/10 text-primary' : 'text-foreground'
-                    }`}
-                  >
-                    {area.name} - Bortle {areaBortle}
-                  </button>
-                );
-              })}
+              {Object.entries(areas).map(([key, area]) => (
+                <button
+                  key={key}
+                  onClick={() => {
+                    setSelectedArea(key);
+                    setDropdownOpen(false);
+                  }}
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-muted/50 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                    selectedArea === key ? 'bg-primary/10 text-primary' : 'text-foreground'
+                  }`}
+                >
+                  {area.name} - Bortle {allAreaBortleClasses[key]}
+                </button>
+              ))}
             </div>
           )}
         </div>
