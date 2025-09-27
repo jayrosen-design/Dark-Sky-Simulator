@@ -155,12 +155,12 @@ const Index = () => {
           </div>
         </Card>
 
-        {/* Main Content - 3 Column Layout */}
-        <div className="grid grid-cols-12 gap-4 min-h-[calc(100vh-8rem)]">
+        {/* Main Content - Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           
           {/* Left Column - Mitigation Controls */}
-          <div className="col-span-12 lg:col-span-3">
-            <Card className="h-auto lg:h-full bg-card/50 backdrop-blur-sm border-primary/20">
+          <div className="lg:col-span-3">
+            <Card className="bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -180,7 +180,7 @@ const Index = () => {
                   </button>
                 </div>
               </div>
-              <div className="lg:h-[calc(100%-5rem)]">
+              <div className="max-h-[600px] overflow-y-auto">
                 <MitigationControls 
                   settings={mitigationSettings}
                   onSettingChange={handleSettingChange}
@@ -190,7 +190,7 @@ const Index = () => {
           </div>
 
           {/* Center Column - Map and Sky View */}
-          <div className="col-span-12 lg:col-span-6 space-y-4">
+          <div className="lg:col-span-6 space-y-4">
             {/* Light Pollution Map */}
             <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="flex items-center gap-2 mb-4">
@@ -199,7 +199,7 @@ const Index = () => {
                   Light Pollution Map
                 </h2>
               </div>
-              <div className="h-64 lg:h-80">
+              <div className="h-64 sm:h-80 lg:h-96">
                 <DarkSkyMap mitigationSettings={mitigationSettings} />
               </div>
             </Card>
@@ -212,15 +212,15 @@ const Index = () => {
                   Night Sky Simulation
                 </h2>
               </div>
-              <div className="h-96 lg:h-[28rem]">
+              <div className="h-64 sm:h-80 lg:h-96">
                 <SkyPanorama mitigationSettings={mitigationSettings} />
               </div>
             </Card>
           </div>
 
           {/* Right Column - Progress Dashboard */}
-          <div className="col-span-12 lg:col-span-3">
-            <Card className="h-auto lg:h-full bg-card/50 backdrop-blur-sm border-primary/20">
+          <div className="lg:col-span-3">
+            <Card className="bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-primary" />
@@ -230,7 +230,7 @@ const Index = () => {
                   Track certification progress
                 </p>
               </div>
-              <div className="lg:h-[calc(100%-5rem)] lg:overflow-hidden">
+              <div className="max-h-[600px] overflow-y-auto">
                 <ProgressDashboard 
                   mitigationSettings={mitigationSettings} 
                   onApplyPreset={handleApplyPreset}
