@@ -1,16 +1,32 @@
-import React, { Suspense, useMemo } from 'react';
+import React, { Suspense, useMemo, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
+import { ChevronDown } from 'lucide-react';
 
 interface SkyPanoramaProps {
   mitigationSettings: Record<string, boolean | number>;
 }
 
+interface AreaData {
+  name: string;
+  baseBortle: number;
+}
+
 const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
-  // Calculate the current Bortle class for Paynes Prairie based on mitigation
+  const [selectedArea, setSelectedArea] = useState<string>('paynes-prairie');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const areas: Record<string, AreaData> = {
+    'paynes-prairie': { name: 'Paynes Prairie', baseBortle: 4 },
+    'suburban': { name: 'Suburban Gainesville', baseBortle: 6 },
+    'downtown': { name: 'Gainesville Downtown', baseBortle: 9 },
+  };
+
+  // Calculate the current Bortle class for selected area based on mitigation
   const currentBortleClass = useMemo(() => {
-    const baseBortle = 4; // Paynes Prairie starts at Bortle 4
+    const baseArea = areas[selectedArea];
+    const baseBortle = baseArea.baseBortle;
     
     // Calculate mitigation factor (same logic as in DarkSkyMap)
     let factor = 1.0;
@@ -23,13 +39,14 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
       factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
     }
     
-    // Convert factor to Bortle improvement
+    // Convert factor to Bortle improvement (scaled by base level)
     const improvement = 1 - Math.max(factor, 0.25);
-    const bortleImprovement = Math.floor(improvement * 3); // Max 3 class improvement
+    const maxImprovement = baseBortle <= 4 ? 2 : baseBortle <= 6 ? 3 : 4;
+    const bortleImprovement = Math.floor(improvement * maxImprovement);
     const newBortle = Math.max(1, baseBortle - bortleImprovement);
     
     return newBortle;
-  }, [mitigationSettings]);
+  }, [mitigationSettings, selectedArea, areas]);
 
   const PanoramaSphere = () => {
     const texture = useMemo(() => {
@@ -71,13 +88,63 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
         </Suspense>
       </Canvas>
       
-      {/* Overlay info */}
-      <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20 z-[1000]">
+      {/* Area Selector Dropdown */}
+      <div className="absolute top-4 left-4 z-[1001]">
+        <div className="relative">
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center gap-2 bg-card/95 backdrop-blur-sm border border-primary/20 rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-card/100 transition-colors"
+          >
+            <span>{areas[selectedArea].name} - Bortle {currentBortleClass}</span>
+            <ChevronDown className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {dropdownOpen && (
+            <div className="absolute top-full left-0 mt-1 bg-card border border-primary/20 rounded-lg shadow-xl z-[1002] min-w-full">
+              {Object.entries(areas).map(([key, area]) => {
+                const areaBortle = useMemo(() => {
+                  let factor = 1.0;
+                  if (mitigationSettings.fullShielding) factor *= 0.75;
+                  if (mitigationSettings.cctLimits) factor *= 0.85;
+                  if (mitigationSettings.curfews) factor *= 0.70;
+                  if (mitigationSettings.streetlightDimming) factor *= 0.90;
+                  if (mitigationSettings.darkSkyOverlays) factor *= 0.80;
+                  if (mitigationSettings.intensityReduction) {
+                    factor *= (1 - (mitigationSettings.intensityReduction as number) * 0.01);
+                  }
+                  const improvement = 1 - Math.max(factor, 0.25);
+                  const maxImprovement = area.baseBortle <= 4 ? 2 : area.baseBortle <= 6 ? 3 : 4;
+                  const bortleImprovement = Math.floor(improvement * maxImprovement);
+                  return Math.max(1, area.baseBortle - bortleImprovement);
+                }, [area.baseBortle]);
+
+                return (
+                  <button
+                    key={key}
+                    onClick={() => {
+                      setSelectedArea(key);
+                      setDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 text-sm hover:bg-muted/50 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                      selectedArea === key ? 'bg-primary/10 text-primary' : 'text-foreground'
+                    }`}
+                  >
+                    {area.name} - Bortle {areaBortle}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Sky Info Overlay */}
+      <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20 z-[1000]">
         <h4 className="font-semibold text-sm mb-1">Sky View Simulation</h4>
         <div className="text-xs space-y-1">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary"></div>
-            <span>Paynes Prairie Area</span>
+            <span>{areas[selectedArea].name}</span>
           </div>
           <div className="font-medium">
             Bortle Class {currentBortleClass}
