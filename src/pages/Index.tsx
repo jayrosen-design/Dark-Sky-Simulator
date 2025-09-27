@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import DarkSkyMap from '@/components/DarkSkyMap';
+import SkyPanorama from '@/components/SkyPanorama';
 import MitigationControls from '@/components/MitigationControls';
 import ProgressDashboard from '@/components/ProgressDashboard';
 import { Card } from '@/components/ui/card';
-import { Star, Map, Settings, BarChart3, RotateCcw } from 'lucide-react';
+import { Star, Map, Settings, BarChart3, RotateCcw, Eye } from 'lucide-react';
 
 const Index = () => {
   const [mitigationSettings, setMitigationSettings] = useState({
@@ -147,17 +148,31 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* Center Column - Map */}
-          <div className="col-span-12 lg:col-span-6">
-            <Card className="h-auto lg:h-full p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+          {/* Center Column - Map and Sky View */}
+          <div className="col-span-12 lg:col-span-6 space-y-4">
+            {/* Light Pollution Map */}
+            <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="flex items-center gap-2 mb-4">
                 <Map className="w-5 h-5 text-primary" />
                 <h2 className="text-lg font-semibold text-foreground">
                   Light Pollution Map
                 </h2>
               </div>
-              <div className="h-96 lg:h-[calc(100%-3rem)]">
+              <div className="h-64 lg:h-80">
                 <DarkSkyMap mitigationSettings={mitigationSettings} />
+              </div>
+            </Card>
+
+            {/* Sky Panorama Viewer */}
+            <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+              <div className="flex items-center gap-2 mb-4">
+                <Eye className="w-5 h-5 text-primary" />
+                <h2 className="text-lg font-semibold text-foreground">
+                  Night Sky Simulation
+                </h2>
+              </div>
+              <div className="h-64 lg:h-80">
+                <SkyPanorama mitigationSettings={mitigationSettings} />
               </div>
             </Card>
           </div>
