@@ -5,6 +5,7 @@ import MitigationControls from '@/components/MitigationControls';
 import ProgressDashboard from '@/components/ProgressDashboard';
 import { Card } from '@/components/ui/card';
 import { Star, Map, Settings, BarChart3, RotateCcw, Eye } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Index = () => {
   const [mitigationSettings, setMitigationSettings] = useState({
@@ -93,7 +94,11 @@ const Index = () => {
       <div className="w-full space-y-4 p-4 pb-8">{/* Added bottom padding */}
         {/* Header */}
         <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
+          <div className="relative">
+            <div className="absolute top-0 right-0">
+              <ThemeToggle />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-center pr-12">
             
             {/* Title Column */}
             <div className="flex items-center gap-3">
@@ -152,6 +157,7 @@ const Index = () => {
               </div>
             </div>
 
+            </div>
           </div>
         </Card>
 
