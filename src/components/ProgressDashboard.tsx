@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { 
   Target, 
   Star, 
@@ -9,7 +18,8 @@ import {
   TrendingUp,
   MapPin,
   Eye,
-  CheckCircle2
+  CheckCircle2,
+  Info
 } from 'lucide-react';
 
 interface ProgressDashboardProps {
@@ -138,6 +148,30 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Eye className="w-5 h-5 text-primary" />
           <h3 className="font-semibold text-foreground">Bortle Scale</h3>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="sm" className="p-1 h-6 w-6">
+                <Info className="w-4 h-4 text-muted-foreground" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Bortle Scale</DialogTitle>
+                <DialogDescription asChild>
+                  <div className="space-y-3 text-sm">
+                    <p>The Bortle Scale measures light pollution in night skies, ranging from 1 (pristine dark sky) to 9 (inner-city sky).</p>
+                    <div className="space-y-2">
+                      <div><strong className="text-green-500">Class 1-3:</strong> Excellent dark skies, Milky Way vivid and detailed</div>
+                      <div><strong className="text-yellow-500">Class 4-5:</strong> Rural/suburban skies, Milky Way visible but less detailed</div>
+                      <div><strong className="text-orange-500">Class 6-7:</strong> Bright suburban skies, Milky Way difficult to see</div>
+                      <div><strong className="text-red-500">Class 8-9:</strong> Inner-city skies, Milky Way invisible</div>
+                    </div>
+                    <p>Our simulations show how different mitigation strategies can improve the Bortle classification for each area.</p>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </div>
         
         <div className="grid grid-cols-3 gap-3">
@@ -272,6 +306,44 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Star className="w-4 h-4 text-accent" />
           <h3 className="font-semibold text-foreground">Success Models</h3>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="sm" className="p-1 h-6 w-6">
+                <Info className="w-4 h-4 text-muted-foreground" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Dark Sky Success Stories</DialogTitle>
+                <DialogDescription asChild>
+                  <div className="space-y-4 text-sm">
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-2">Groveland, Florida</h4>
+                      <ul className="space-y-1 text-muted-foreground">
+                        <li>• First city in Florida to achieve Dark Sky designation</li>
+                        <li>• Implemented 3000K CCT limit for all outdoor lighting</li>
+                        <li>• Required full cutoff fixtures for new installations</li>
+                        <li>• 10-year retrofit plan for existing streetlights</li>
+                        <li>• Strong community education program</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-2">Flagstaff, Arizona</h4>
+                      <ul className="space-y-1 text-muted-foreground">
+                        <li>• World's first International Dark Sky City (2001)</li>
+                        <li>• Comprehensive lighting ordinance since 1999</li>
+                        <li>• 2700K CCT limit with lumen caps</li>
+                        <li>• Extensive lighting zones based on land use</li>
+                        <li>• Partnership with Lowell Observatory</li>
+                        <li>• Ongoing monitoring and enforcement program</li>
+                      </ul>
+                    </div>
+                    <p className="text-muted-foreground italic">Click on a strategy above to apply their proven approach to your simulation.</p>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="space-y-3">
           <button
