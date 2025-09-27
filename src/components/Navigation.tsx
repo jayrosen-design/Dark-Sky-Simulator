@@ -9,7 +9,7 @@ const Navigation = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: "Alachua Dark Sky Simulator", path: "/" },
+    { name: "Simulator", path: "/" },
     { name: "Light Pollution", path: "/light-pollution" },
     { name: "Impact on Animals", path: "/impact-animals" },
     { name: "Impact on Humans", path: "/impact-humans" },
@@ -29,7 +29,7 @@ const Navigation = () => {
           <Link to="/" className="flex items-center space-x-2">
             <Moon className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Dark Sky Mapper
+              Alachua Dark Sky Simulator
             </span>
           </Link>
 
