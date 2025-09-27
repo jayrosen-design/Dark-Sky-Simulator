@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Target, 
   Star, 
@@ -9,7 +10,8 @@ import {
   TrendingUp,
   MapPin,
   Eye,
-  CheckCircle2
+  CheckCircle2,
+  Info
 } from 'lucide-react';
 
 interface ProgressDashboardProps {
@@ -138,6 +140,40 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Eye className="w-5 h-5 text-primary" />
           <h3 className="font-semibold text-foreground">Bortle Scale</h3>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="ml-auto p-1 rounded-full hover:bg-card/50 transition-colors">
+                <Info className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Bortle Scale</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-3 text-sm">
+                <p>The Bortle Scale measures light pollution levels from 1-9:</p>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-green-500">Bortle 1-3:</span>
+                    <span>Excellent Dark Sky</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium text-yellow-500">Bortle 4-5:</span>
+                    <span>Rural/Suburban</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium text-orange-500">Bortle 6-7:</span>
+                    <span>Bright Suburban</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium text-red-500">Bortle 8-9:</span>
+                    <span>Inner City</span>
+                  </div>
+                </div>
+                <p className="text-muted-foreground">Lower numbers indicate darker skies with better visibility of stars and the Milky Way.</p>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         
         <div className="grid grid-cols-3 gap-3">
@@ -223,14 +259,14 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         </div>
       </Card>
 
-      {/* Dark Sky Certification Status */}
+      {/* Dark Sky Certification Status - Compact with Info Button */}
       <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2">
           <Award className="w-5 h-5 text-accent" />
           <h3 className="font-semibold text-foreground">Dark Sky Certification</h3>
           <Badge 
             variant="outline" 
-            className={`ml-auto ${
+            className={`${
               darkSkyStatus.readiness === 'Ready' ? 'border-success/50 text-success' :
               darkSkyStatus.readiness === 'In Progress' ? 'border-accent/50 text-accent' :
               'border-muted-foreground/50 text-muted-foreground'
@@ -238,32 +274,55 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
           >
             {darkSkyStatus.readiness}
           </Badge>
-        </div>
-        
-        <div className="space-y-2 mb-3">
-          {darkSkyStatus.requirements.map((req) => (
-            <div key={req.name} className="flex items-center gap-2 text-sm">
-              <CheckCircle2 
-                className={`w-4 h-4 ${
-                  req.met ? 'text-success' : 'text-muted-foreground'
-                }`}
-              />
-              <span className={req.met ? 'text-foreground' : 'text-muted-foreground'}>
-                {req.name}
-              </span>
-              <span className="ml-auto text-xs text-muted-foreground">
-                {req.weight}%
-              </span>
-            </div>
-          ))}
-        </div>
-        
-        <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-muted-foreground">Certification Progress</span>
-            <span className="text-foreground font-medium">{darkSkyStatus.progress}%</span>
-          </div>
-          <Progress value={darkSkyStatus.progress} className="h-2" />
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="ml-auto p-1 rounded-full hover:bg-card/50 transition-colors">
+                <Info className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Dark Sky Certification Requirements</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 text-sm">
+                <p>Dark Sky International certification requires meeting these criteria:</p>
+                
+                <div className="space-y-3">
+                  {darkSkyStatus.requirements.map((req) => (
+                    <div key={req.name} className="flex items-center gap-2">
+                      <CheckCircle2 
+                        className={`w-4 h-4 ${
+                          req.met ? 'text-success' : 'text-muted-foreground'
+                        }`}
+                      />
+                      <span className={req.met ? 'text-foreground' : 'text-muted-foreground'}>
+                        {req.name}
+                      </span>
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        {req.weight}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="pt-3 border-t border-border">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-muted-foreground">Progress</span>
+                    <span className="text-foreground font-medium">{darkSkyStatus.progress}%</span>
+                  </div>
+                  <Progress value={darkSkyStatus.progress} className="h-2" />
+                </div>
+
+                <div className="text-muted-foreground text-xs pt-2">
+                  <p><strong>Lighting Ordinance:</strong> Comprehensive lighting code with fixture requirements</p>
+                  <p><strong>Public Lighting Retrofit:</strong> Converting existing infrastructure to Dark Sky-friendly lighting</p>
+                  <p><strong>Protected Areas:</strong> Establishing and maintaining dark zones</p>
+                  <p><strong>Community Education:</strong> Public outreach and awareness programs</p>
+                  <p><strong>Monitoring Program:</strong> Regular sky quality measurements</p>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </Card>
 
@@ -272,6 +331,49 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Star className="w-4 h-4 text-accent" />
           <h3 className="font-semibold text-foreground">Success Models</h3>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="ml-auto p-1 rounded-full hover:bg-card/50 transition-colors">
+                <Info className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Dark Sky Success Stories</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 text-sm">
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-2">Groveland, Florida</h4>
+                    <ul className="space-y-1 text-muted-foreground text-xs">
+                      <li>• Adopted comprehensive lighting ordinance with 3000K CCT limits</li>
+                      <li>• Required full cutoff fixtures for all new development</li>
+                      <li>• Implemented 10-year municipal lighting retrofit plan</li>
+                      <li>• Established lighting curfews for non-essential lighting</li>
+                      <li>• Created public education and enforcement programs</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-2">Flagstaff, Arizona</h4>
+                    <ul className="space-y-1 text-muted-foreground text-xs">
+                      <li>• First International Dark Sky City (2001)</li>
+                      <li>• Stringent 2700K CCT limits with lumen caps</li>
+                      <li>• Comprehensive lighting zones with varying restrictions</li>
+                      <li>• Highway shielding barriers to protect observatories</li>
+                      <li>• Low-albedo surface requirements for new construction</li>
+                      <li>• Strong university-community partnership</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <p className="text-muted-foreground text-xs pt-2 border-t border-border">
+                  Both cities demonstrate that effective dark sky protection requires combining lighting ordinances, 
+                  infrastructure upgrades, and community engagement.
+                </p>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="space-y-3">
           <button
