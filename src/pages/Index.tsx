@@ -200,15 +200,7 @@ const Index = () => {
           <div className="lg:col-span-6">
             <div className="space-y-4">
               {/* Cost Estimate */}
-              <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
-                <div className="flex items-center gap-2 mb-4">
-                  <DollarSign className="w-5 h-5 text-primary" />
-                  <h2 className="text-lg font-semibold text-foreground">
-                    Cost Estimate
-                  </h2>
-                </div>
-                <CostEstimate mitigationSettings={mitigationSettings} />
-              </Card>
+              <CostEstimate mitigationSettings={mitigationSettings} />
 
               {/* Light Pollution Map */}
               <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
