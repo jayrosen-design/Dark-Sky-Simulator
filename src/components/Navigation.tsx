@@ -9,7 +9,7 @@ const Navigation = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: "Simulation", path: "/" },
+    { name: "Alachua Dark Sky Simulator", path: "/" },
     { name: "Light Pollution", path: "/light-pollution" },
     { name: "Impact on Animals", path: "/impact-animals" },
     { name: "Impact on Humans", path: "/impact-humans" },

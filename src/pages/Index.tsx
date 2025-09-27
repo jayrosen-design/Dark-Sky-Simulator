@@ -93,28 +93,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-space">
       <div className="w-full space-y-4 p-2 sm:p-4 pb-8">{/* Reduced padding on mobile, wider on desktop */}
-        {/* Header */}
-        <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
-          <div className="relative">
-            <div className="absolute top-0 right-0">
-              <ThemeToggle />
-            </div>
-            <div className="flex items-center gap-3 pr-12">
-              <div className="p-2 rounded-lg bg-primary/10 animate-glow">
-                <Star className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-foreground">
-                  Alachua Dark Sky Simulator
-                </h1>
-                <p className="text-xs text-muted-foreground">
-                  Interactive planning tool
-                </p>
-              </div>
-            </div>
-          </div>
-        </Card>
-
         {/* Main Content - Responsive Layout */}
         <div className="space-y-4 xl:grid xl:grid-cols-12 xl:gap-4 xl:space-y-0">{/* Changed to xl breakpoint for better tablet experience */}
           
@@ -160,7 +138,7 @@ const Index = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <Map className="w-5 h-5 text-primary" />
                   <h2 className="text-lg font-semibold text-foreground">
-                    Light Pollution Map
+                    Alachua County - Light Pollution Map
                   </h2>
                 </div>
                 <div className="h-64 sm:h-80 xl:h-[350px]">{/* Responsive height */}
