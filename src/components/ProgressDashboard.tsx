@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Target, 
   Star, 
@@ -10,8 +9,7 @@ import {
   TrendingUp,
   MapPin,
   Eye,
-  CheckCircle2,
-  Info
+  CheckCircle2
 } from 'lucide-react';
 
 interface ProgressDashboardProps {
@@ -140,28 +138,6 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Eye className="w-5 h-5 text-primary" />
           <h3 className="font-semibold text-foreground">Bortle Scale</h3>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="ml-auto p-1 rounded-full hover:bg-accent/20 transition-colors">
-                <Info className="w-4 h-4 text-muted-foreground hover:text-foreground" />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Understanding the Bortle Scale</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 text-sm">
-                <p>The Bortle Scale is a nine-level numeric scale that measures the night sky's brightness (or light pollution) of a particular location.</p>
-                <div className="space-y-2">
-                  <div><strong>Class 1-3:</strong> <span className="text-green-500">Excellent Dark Sky</span> - Milky Way is vivid and clearly visible</div>
-                  <div><strong>Class 4-5:</strong> <span className="text-yellow-500">Rural/Suburban</span> - Milky Way visible but may be faint</div>
-                  <div><strong>Class 6-7:</strong> <span className="text-orange-500">Bright Suburban</span> - Milky Way difficult or impossible to see</div>
-                  <div><strong>Class 8-9:</strong> <span className="text-red-500">Inner City</span> - Sky is bright, only brightest stars visible</div>
-                </div>
-                <p>This tool shows how different mitigation strategies can improve the Bortle class for various locations around Gainesville.</p>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
         
         <div className="grid grid-cols-3 gap-3">
@@ -252,70 +228,6 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Award className="w-5 h-5 text-accent" />
           <h3 className="font-semibold text-foreground">Dark Sky Certification</h3>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="p-1 rounded-full hover:bg-accent/20 transition-colors">
-                <Info className="w-4 h-4 text-muted-foreground hover:text-foreground" />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Dark Sky Certification Requirements</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 text-sm">
-                <p>DarkSky International certifies places that preserve and protect dark night skies. Here are the key requirements:</p>
-                <div className="space-y-3">
-                  <div>
-                    <h4 className="font-semibold mb-1">Lighting Ordinance (30%)</h4>
-                    <p>Comprehensive lighting regulations that require fully shielded fixtures, warm color temperatures (≤3000K), and appropriate lighting levels.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Public Lighting Retrofit (25%)</h4>
-                    <p>Converting existing public lighting to dark sky-friendly fixtures, including streetlights, park lighting, and municipal buildings.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Protected Areas (20%)</h4>
-                    <p>Establishing buffer zones around sensitive areas like observatories, wildlife habitats, and natural preserves.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Community Education (15%)</h4>
-                    <p>Public outreach programs to educate residents and businesses about the importance of dark skies and responsible lighting.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Monitoring Program (10%)</h4>
-                    <p>Regular measurement of sky brightness to track progress and ensure ongoing compliance with dark sky standards.</p>
-                  </div>
-                </div>
-                <div className="border-t pt-3">
-                  <h4 className="font-semibold mb-2">Current Progress</h4>
-                  <div className="space-y-2">
-                    {darkSkyStatus.requirements.map((req) => (
-                      <div key={req.name} className="flex items-center gap-2">
-                        <CheckCircle2 
-                          className={`w-4 h-4 ${
-                            req.met ? 'text-success' : 'text-muted-foreground'
-                          }`}
-                        />
-                        <span className={req.met ? 'text-foreground' : 'text-muted-foreground'}>
-                          {req.name}
-                        </span>
-                        <span className="ml-auto text-xs text-muted-foreground">
-                          {req.weight}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Certification Progress</span>
-                      <span className="text-foreground font-medium">{darkSkyStatus.progress}%</span>
-                    </div>
-                    <Progress value={darkSkyStatus.progress} className="h-2" />
-                  </div>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
           <Badge 
             variant="outline" 
             className={`ml-auto ${
@@ -327,6 +239,32 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             {darkSkyStatus.readiness}
           </Badge>
         </div>
+        
+        <div className="space-y-2 mb-3">
+          {darkSkyStatus.requirements.map((req) => (
+            <div key={req.name} className="flex items-center gap-2 text-sm">
+              <CheckCircle2 
+                className={`w-4 h-4 ${
+                  req.met ? 'text-success' : 'text-muted-foreground'
+                }`}
+              />
+              <span className={req.met ? 'text-foreground' : 'text-muted-foreground'}>
+                {req.name}
+              </span>
+              <span className="ml-auto text-xs text-muted-foreground">
+                {req.weight}%
+              </span>
+            </div>
+          ))}
+        </div>
+        
+        <div>
+          <div className="flex justify-between text-sm mb-1">
+            <span className="text-muted-foreground">Certification Progress</span>
+            <span className="text-foreground font-medium">{darkSkyStatus.progress}%</span>
+          </div>
+          <Progress value={darkSkyStatus.progress} className="h-2" />
+        </div>
       </Card>
 
       {/* Success Models */}
@@ -334,44 +272,6 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Star className="w-4 h-4 text-accent" />
           <h3 className="font-semibold text-foreground">Success Models</h3>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="ml-auto p-1 rounded-full hover:bg-accent/20 transition-colors">
-                <Info className="w-4 h-4 text-muted-foreground hover:text-foreground" />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Dark Sky Success Stories</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 text-sm">
-                <div>
-                  <h4 className="font-semibold mb-2">Groveland, Florida</h4>
-                  <p className="mb-2">First city in Florida to achieve Dark Sky certification. Their strategy included:</p>
-                  <ul className="list-disc list-inside space-y-1 ml-2">
-                    <li>Mandatory 3000K color temperature limit for all outdoor lighting</li>
-                    <li>Full shielding requirements for new and replacement fixtures</li>
-                    <li>10-year retrofit plan for existing municipal lighting</li>
-                    <li>Partnerships with local utilities for residential education</li>
-                    <li>Protection of natural areas and wildlife corridors</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Flagstaff, Arizona</h4>
-                  <p className="mb-2">World's first International Dark-Sky City. Their comprehensive approach featured:</p>
-                  <ul className="list-disc list-inside space-y-1 ml-2">
-                    <li>2700K maximum color temperature (even warmer than most)</li>
-                    <li>Lumen caps based on property type and zoning</li>
-                    <li>Comprehensive lighting zones with different standards</li>
-                    <li>Highway lighting barriers to protect observatories</li>
-                    <li>Low-albedo road surfaces to reduce light reflection</li>
-                    <li>Strong enforcement and community engagement programs</li>
-                  </ul>
-                </div>
-                <p className="text-muted-foreground italic">Click on either strategy above to apply their settings and see the potential impact on your area.</p>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
         <div className="space-y-3">
           <button
