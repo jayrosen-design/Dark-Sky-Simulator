@@ -156,7 +156,7 @@ const Index = () => {
         </Card>
 
         {/* Main Content - Responsive Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="space-y-4 lg:grid lg:grid-cols-12 lg:gap-4 lg:space-y-0">
           
           {/* Left Column - Mitigation Controls */}
           <div className="lg:col-span-3">
@@ -180,7 +180,7 @@ const Index = () => {
                   </button>
                 </div>
               </div>
-              <div className="max-h-[600px] overflow-y-auto">
+              <div>
                 <MitigationControls 
                   settings={mitigationSettings}
                   onSettingChange={handleSettingChange}
@@ -190,32 +190,34 @@ const Index = () => {
           </div>
 
           {/* Center Column - Map and Sky View */}
-          <div className="lg:col-span-6 space-y-4">
-            {/* Light Pollution Map */}
-            <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
-              <div className="flex items-center gap-2 mb-4">
-                <Map className="w-5 h-5 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">
-                  Light Pollution Map
-                </h2>
-              </div>
-              <div className="h-64 sm:h-80 lg:h-[400px]">
-                <DarkSkyMap mitigationSettings={mitigationSettings} />
-              </div>
-            </Card>
+          <div className="lg:col-span-6">
+            <div className="space-y-4">
+              {/* Light Pollution Map */}
+              <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+                <div className="flex items-center gap-2 mb-4">
+                  <Map className="w-5 h-5 text-primary" />
+                  <h2 className="text-lg font-semibold text-foreground">
+                    Light Pollution Map
+                  </h2>
+                </div>
+                <div className="h-64 sm:h-80 lg:h-[350px]">
+                  <DarkSkyMap mitigationSettings={mitigationSettings} />
+                </div>
+              </Card>
 
-            {/* Sky Panorama Viewer */}
-            <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
-              <div className="flex items-center gap-2 mb-4">
-                <Eye className="w-5 h-5 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">
-                  Night Sky Simulation
-                </h2>
-              </div>
-              <div className="h-64 sm:h-80 lg:h-[400px]">
-                <SkyPanorama mitigationSettings={mitigationSettings} />
-              </div>
-            </Card>
+              {/* Sky Panorama Viewer */}
+              <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+                <div className="flex items-center gap-2 mb-4">
+                  <Eye className="w-5 h-5 text-primary" />
+                  <h2 className="text-lg font-semibold text-foreground">
+                    Night Sky Simulation
+                  </h2>
+                </div>
+                <div className="h-64 sm:h-80 lg:h-[350px]">
+                  <SkyPanorama mitigationSettings={mitigationSettings} />
+                </div>
+              </Card>
+            </div>
           </div>
 
           {/* Right Column - Progress Dashboard */}
@@ -230,7 +232,7 @@ const Index = () => {
                   Track certification progress
                 </p>
               </div>
-              <div className="max-h-[600px] overflow-y-auto">
+              <div>
                 <ProgressDashboard 
                   mitigationSettings={mitigationSettings} 
                   onApplyPreset={handleApplyPreset}
