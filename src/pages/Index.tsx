@@ -90,7 +90,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-space">
-      <div className="w-full space-y-4 p-4">
+      <div className="w-full space-y-4 p-4 pb-8">{/* Added bottom padding */}
         {/* Header */}
         <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
@@ -199,7 +199,7 @@ const Index = () => {
                   Light Pollution Map
                 </h2>
               </div>
-              <div className="h-64 sm:h-80 lg:h-96">
+              <div className="h-64 sm:h-80 lg:h-[400px]">
                 <DarkSkyMap mitigationSettings={mitigationSettings} />
               </div>
             </Card>
@@ -212,7 +212,7 @@ const Index = () => {
                   Night Sky Simulation
                 </h2>
               </div>
-              <div className="h-64 sm:h-80 lg:h-96">
+              <div className="h-64 sm:h-80 lg:h-[400px]">
                 <SkyPanorama mitigationSettings={mitigationSettings} />
               </div>
             </Card>
