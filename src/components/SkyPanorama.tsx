@@ -61,13 +61,11 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
         <Suspense fallback={null}>
           <PanoramaSphere />
           <OrbitControls
-            enableZoom={true}
+            enableZoom={false}
             enablePan={false}
             enableDamping={true}
             dampingFactor={0.05}
             rotateSpeed={0.5}
-            minDistance={0.1}
-            maxDistance={10}
             target={[0, 0, 0]}
           />
         </Suspense>
@@ -96,7 +94,7 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
       {/* Controls hint */}
       <div className="absolute bottom-4 right-4 bg-card/90 backdrop-blur-sm rounded-lg p-2 border border-primary/20 z-[1000]">
         <div className="text-xs text-muted-foreground">
-          Drag to look around • Scroll to zoom
+          Drag to look around
         </div>
       </div>
     </div>
