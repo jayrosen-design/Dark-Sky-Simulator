@@ -171,7 +171,7 @@ const Index = () => {
                   Night Sky Simulation
                 </h2>
               </div>
-              <div className="h-64 lg:h-80">
+              <div className="h-96 lg:h-[28rem]">
                 <SkyPanorama mitigationSettings={mitigationSettings} />
               </div>
             </Card>
