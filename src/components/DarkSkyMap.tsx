@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Card } from '@/components/ui/card';
+import { useTheme } from 'next-themes';
 
 interface DarkSkyMapProps {
   mitigationSettings: Record<string, boolean | number>;
@@ -11,6 +12,8 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const pollutionLayers = useRef<L.LayerGroup | null>(null);
+  const tileLayer = useRef<L.TileLayer | null>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -25,12 +28,39 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
       attributionControl: true
     });
 
-    // Add OpenStreetMap tile layer with dark theme
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // Add appropriate tile layer based on theme
+    const tileUrl = theme === 'light' 
+      ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+      
+    tileLayer.current = L.tileLayer(tileUrl, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: 'abcd',
       maxZoom: 20
     }).addTo(map.current);
+
+    // Custom styles for zoom controls based on theme
+    const style = document.createElement('style');
+    style.textContent = `
+      .leaflet-control-zoom-in,
+      .leaflet-control-zoom-out {
+        background-color: hsl(var(--card)) !important;
+        border: 1px solid hsl(var(--border)) !important;
+        color: hsl(var(--foreground)) !important;
+        backdrop-filter: blur(8px);
+        transition: all 0.2s ease;
+      }
+      .leaflet-control-zoom-in:hover,
+      .leaflet-control-zoom-out:hover {
+        background-color: hsl(var(--card)/100%) !important;
+        border-color: hsl(var(--primary)/20%) !important;
+      }
+      .leaflet-control-zoom {
+        border: none !important;
+        box-shadow: var(--shadow-glow) !important;
+      }
+    `;
+    document.head.appendChild(style);
 
     // Initialize pollution layers
     pollutionLayers.current = L.layerGroup().addTo(map.current);
@@ -48,6 +78,17 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
       }
     };
   }, []);
+
+  // Update tile layer when theme changes
+  useEffect(() => {
+    if (!map.current || !tileLayer.current) return;
+    
+    const tileUrl = theme === 'light' 
+      ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    
+    tileLayer.current.setUrl(tileUrl);
+  }, [theme]);
 
   // Update layers when mitigation settings change
   useEffect(() => {
