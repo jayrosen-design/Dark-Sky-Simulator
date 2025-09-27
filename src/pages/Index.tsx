@@ -189,7 +189,7 @@ const Index = () => {
               <div className="p-4 border-b border-border">
                 <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-primary" />
-                  Progress Dashboard
+                  Dark Sky Initiative Progress
                 </h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   Track certification progress

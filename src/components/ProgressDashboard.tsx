@@ -133,62 +133,50 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
 
   return (
     <div className="space-y-4 h-full overflow-y-auto pr-2 p-4">
-      {/* Location Bortle Status - 3 Column Layout */}
-      <Card className="p-4 bg-gradient-dark-sky border-primary/20 shadow-glow">
+      {/* Bortle Scale - 3 Column Layout */}
+      <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
         <div className="flex items-center gap-2 mb-3">
           <Eye className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">Paynes Prairie Visibility</h3>
+          <h3 className="font-semibold text-foreground">Bortle Scale</h3>
         </div>
         
         <div className="grid grid-cols-3 gap-3">
-          {/* Gainesville Downtown */}
+          {/* Paynes Prairie - First */}
           <div className="text-center p-2 rounded-lg bg-card/40 border border-primary/10">
             <div className="flex items-center justify-center gap-1 mb-2">
-              <MapPin className="w-3 h-3 text-primary" />
+              <Target className="w-3 h-3 text-success" />
             </div>
-            <div className="font-medium text-foreground text-xs mb-1">Gainesville Downtown</div>
+            <div className="font-medium text-foreground text-xs mb-1">Paynes Prairie</div>
             <div className="text-muted-foreground text-xs">
-              Bortle 9
-              <div className="text-success text-xs mt-0.5"> → 7</div>
+              <span className="font-bold text-yellow-500">Bortle {metrics.currentBortle}</span>
+              {metrics.bortleImprovement > 0 && (
+                <div className="font-bold text-green-500 text-xs mt-0.5"> → Bortle {metrics.improvedBortle.toFixed(1)}</div>
+              )}
             </div>
           </div>
 
-          {/* Suburban Gainesville */}
+          {/* Suburban Gainesville - Second */}
           <div className="text-center p-2 rounded-lg bg-card/40 border border-primary/10">
             <div className="flex items-center justify-center gap-1 mb-2">
               <Star className="w-3 h-3 text-mitigation" />
             </div>
             <div className="font-medium text-foreground text-xs mb-1">Suburban Gainesville</div>
             <div className="text-muted-foreground text-xs">
-              Bortle 6
-              <div className="text-success text-xs mt-0.5"> → 4</div>
+              <span className="font-bold text-orange-500">Bortle 6</span>
+              <div className="font-bold text-yellow-500 text-xs mt-0.5"> → Bortle 4</div>
             </div>
           </div>
 
-          {/* Paynes Prairie */}
-          <div className="text-center p-2 rounded-lg bg-card/40 border border-success/20">
+          {/* Gainesville Downtown - Third */}
+          <div className="text-center p-2 rounded-lg bg-card/40 border border-primary/10">
             <div className="flex items-center justify-center gap-1 mb-2">
-              <Target className="w-3 h-3 text-success" />
+              <MapPin className="w-3 h-3 text-primary" />
             </div>
-            <div className="font-medium text-foreground text-xs mb-1">Paynes Prairie</div>
+            <div className="font-medium text-foreground text-xs mb-1">Gainesville Downtown</div>
             <div className="text-muted-foreground text-xs">
-              Bortle {metrics.currentBortle}
-              {metrics.bortleImprovement > 0 && (
-                <div className="text-success text-xs mt-0.5"> → {metrics.improvedBortle.toFixed(1)}</div>
-              )}
+              <span className="font-bold text-red-500">Bortle 9</span>
+              <div className="font-bold text-orange-500 text-xs mt-0.5"> → Bortle 7</div>
             </div>
-          </div>
-        </div>
-        
-        <div className="mt-3 p-2 rounded-md bg-card/30 border border-primary/10">
-          <div className="text-sm font-medium text-foreground mb-1">
-            {getBortleDescription(metrics.improvedBortle)}
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {metrics.bortleImprovement > 0 
-              ? `Prairie improvement: ${metrics.bortleImprovement.toFixed(1)} Bortle classes`
-              : 'No improvement with current settings'
-            }
           </div>
         </div>
       </Card>
