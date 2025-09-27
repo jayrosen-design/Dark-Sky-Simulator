@@ -99,10 +99,7 @@ const Index = () => {
             <div className="absolute top-0 right-0">
               <ThemeToggle />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-center pr-12">
-            
-            {/* Title Column */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 pr-12">
               <div className="p-2 rounded-lg bg-primary/10 animate-glow">
                 <Star className="w-6 h-6 text-primary" />
               </div>
@@ -114,50 +111,6 @@ const Index = () => {
                   Interactive planning tool
                 </p>
               </div>
-            </div>
-
-            {/* Gainesville Downtown */}
-            <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
-              <Map className="w-4 h-4 text-primary" />
-              <div>
-                <div className="font-medium text-foreground text-xs">Gainesville Downtown</div>
-                <div className="text-muted-foreground text-xs">
-                  Bortle {areas.downtown.original}
-                  {areas.downtown.improved !== areas.downtown.original && (
-                    <span className="text-success"> → {areas.downtown.improved}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Suburban Gainesville */}
-            <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
-              <Star className="w-4 h-4 text-mitigation" />
-              <div>
-                <div className="font-medium text-foreground text-xs">Suburban Gainesville</div>
-                <div className="text-muted-foreground text-xs">
-                  Bortle {areas.suburban.original}
-                  {areas.suburban.improved !== areas.suburban.original && (
-                    <span className="text-success"> → {areas.suburban.improved}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Paynes Prairie */}
-            <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/20">
-              <BarChart3 className="w-4 h-4 text-success" />
-              <div>
-                <div className="font-medium text-foreground text-xs">Paynes Prairie</div>
-                <div className="text-muted-foreground text-xs">
-                  Bortle {areas.paynes.original}
-                  {areas.paynes.improved !== areas.paynes.original && (
-                    <span className="text-success"> → {areas.paynes.improved}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
             </div>
           </div>
         </Card>
