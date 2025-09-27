@@ -51,7 +51,7 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
     <div className="relative w-full h-full rounded-lg overflow-hidden border border-primary/20 shadow-glow bg-background">
       <Canvas
         camera={{
-          position: [0, 0, 0],
+          position: [0, 0, 0.1],
           fov: 75,
           near: 0.1,
           far: 1000
