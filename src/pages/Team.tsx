@@ -33,7 +33,7 @@ const Team = () => {
             <div className="space-y-2 text-muted-foreground">
               <p>• Alachua County Environmental Protection Advisory Committee</p>
               <p>• Alachua Astronomy Club</p>
-              <p>• Chiefland Astronomy Club</p>
+              <p>• Chiefland Astronomy Village</p>
               <p>• UF Astraeus Space Institute</p>
             </div>
           </div>
