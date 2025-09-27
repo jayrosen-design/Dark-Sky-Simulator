@@ -120,24 +120,35 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
       (polygon as any)._originalBortle = area.bortle;
       (polygon as any)._areaName = area.area;
 
-      // Update popup with current mitigation level
-      const updatePopup = () => {
+      // Calculate center point for label placement
+      const bounds = polygon.getBounds();
+      const center = bounds.getCenter();
+
+      // Create label with area name and Bortle class
+      const updateLabel = () => {
         const currentFactor = calculateMitigationFactor(mitigationSettings);
         const mitigatedBortle = Math.max(1, Math.round(area.bortle * currentFactor));
         
-        const popupContent = `
-          <div class="p-2">
-            <h3 class="font-semibold text-gray-900">${area.area}</h3>
-            <p class="text-sm text-gray-700">Current Bortle Class: ${mitigatedBortle}</p>
-            <p class="text-xs text-gray-600">Original: Class ${area.bortle}</p>
-          </div>
-        `;
-        
-        polygon.setPopupContent(popupContent);
+        if ((polygon as any)._label) {
+          map.current!.removeLayer((polygon as any)._label);
+        }
+
+        const labelIcon = L.divIcon({
+          html: `<div class="bg-card/90 backdrop-blur-sm px-2 py-1 rounded border border-primary/20 text-xs font-medium text-foreground whitespace-nowrap shadow-sm">
+                   <div class="font-semibold">${area.area}</div>
+                   <div>Bortle ${mitigatedBortle}</div>
+                 </div>`,
+          className: 'custom-label',
+          iconSize: [0, 0],
+          iconAnchor: [0, 0]
+        });
+
+        const label = L.marker(center, { icon: labelIcon }).addTo(map.current!);
+        (polygon as any)._label = label;
       };
       
-      updatePopup();
-      (polygon as any)._updatePopup = updatePopup;
+      updateLabel();
+      (polygon as any)._updateLabel = updateLabel;
     });
   };
 
@@ -220,9 +231,9 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
           fillColor: adjustedColor
         });
 
-        // Update popup with current Bortle class
-        if (layer._updatePopup) {
-          layer._updatePopup();
+        // Update label with current Bortle class
+        if (layer._updateLabel) {
+          layer._updateLabel();
         }
       }
     });
