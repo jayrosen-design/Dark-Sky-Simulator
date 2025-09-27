@@ -117,14 +117,25 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
       (polygon as any)._originalColor = area.color;
       (polygon as any)._originalOpacity = area.intensity * 0.6;
       (polygon as any)._originalIntensity = area.intensity;
+      (polygon as any)._originalBortle = area.bortle;
+      (polygon as any)._areaName = area.area;
 
-      polygon.bindPopup(`
-        <div class="p-2">
-          <h3 class="font-semibold text-gray-900">${area.area}</h3>
-          <p class="text-sm text-gray-700">Bortle Class: ${area.bortle}</p>
-          <p class="text-xs text-gray-600">Click for detailed analysis</p>
-        </div>
-      `);
+      // Update popup with current mitigation level
+      const updatePopup = () => {
+        const currentFactor = calculateMitigationFactor(mitigationSettings);
+        const mitigatedBortle = Math.max(1, Math.round(area.bortle * currentFactor));
+        
+        polygon.bindPopup(`
+          <div class="p-2">
+            <h3 class="font-semibold text-gray-900">${area.area}</h3>
+            <p class="text-sm text-gray-700">Current Bortle Class: ${mitigatedBortle}</p>
+            <p class="text-xs text-gray-600">Original: Class ${area.bortle}</p>
+          </div>
+        `);
+      };
+      
+      updatePopup();
+      (polygon as any)._updatePopup = updatePopup;
     });
   };
 
@@ -206,6 +217,11 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
           fillOpacity: adjustedOpacity,
           fillColor: adjustedColor
         });
+
+        // Update popup with current Bortle class
+        if (layer._updatePopup) {
+          layer._updatePopup();
+        }
       }
     });
   };
@@ -233,19 +249,19 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
         <h4 className="font-semibold text-sm mb-2">Light Pollution Levels</h4>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bortle-1"></div>
+            <div className="w-3 h-3 rounded" style={{backgroundColor: '#22c55e'}}></div>
             <span>Bortle 1-3: Excellent Dark Sky</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bortle-4"></div>
+            <div className="w-3 h-3 rounded" style={{backgroundColor: '#fbbf24'}}></div>
             <span>Bortle 4-5: Rural/Suburban</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bortle-6"></div>
+            <div className="w-3 h-3 rounded" style={{backgroundColor: '#f97316'}}></div>
             <span>Bortle 6-7: Bright Suburban</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bortle-9"></div>
+            <div className="w-3 h-3 rounded" style={{backgroundColor: '#ef4444'}}></div>
             <span>Bortle 8-9: Inner City</span>
           </div>
         </div>
