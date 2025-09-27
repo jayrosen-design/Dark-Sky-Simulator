@@ -3,8 +3,9 @@ import DarkSkyMap from '@/components/DarkSkyMap';
 import SkyPanorama from '@/components/SkyPanorama';
 import MitigationControls from '@/components/MitigationControls';
 import ProgressDashboard from '@/components/ProgressDashboard';
+import CostEstimate from '@/components/CostEstimate';
 import { Card } from '@/components/ui/card';
-import { Star, Map, Settings, BarChart3, RotateCcw, Eye } from 'lucide-react';
+import { Star, Map, Settings, BarChart3, RotateCcw, Eye, DollarSign } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Index = () => {
@@ -195,9 +196,20 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* Center Column - Map and Sky View */}
+          {/* Center Column - Cost, Map and Sky View */}
           <div className="lg:col-span-6">
             <div className="space-y-4">
+              {/* Cost Estimate */}
+              <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+                <div className="flex items-center gap-2 mb-4">
+                  <DollarSign className="w-5 h-5 text-primary" />
+                  <h2 className="text-lg font-semibold text-foreground">
+                    Cost Estimate
+                  </h2>
+                </div>
+                <CostEstimate mitigationSettings={mitigationSettings} />
+              </Card>
+
               {/* Light Pollution Map */}
               <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
                 <div className="flex items-center gap-2 mb-4">
