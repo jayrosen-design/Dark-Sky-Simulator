@@ -91,11 +91,61 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  /* Light mode variations - maintaining dark sky theme */
+  /* Light mode variations */
   .light {
-    --background: 230 35% 7%;
-    --foreground: 210 40% 98%;
-    /* Keep dark theme for astronomical accuracy */
+    /* Light backgrounds with subtle space theme */
+    --background: 210 40% 98%;
+    --foreground: 230 35% 7%;
+
+    /* Card and surface colors for light mode */
+    --card: 0 0% 100%;
+    --card-foreground: 230 35% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 35% 7%;
+
+    /* Primary remains celestial blue but with dark foreground */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - lighter space purple */
+    --secondary: 260 15% 90%;
+    --secondary-foreground: 230 35% 7%;
+
+    /* Muted elements for light mode */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 25% 35%;
+
+    /* Accent - warm amber for light pollution indicators */
+    --accent: 45 100% 60%;
+    --accent-foreground: 230 35% 7%;
+
+    /* Destructive - Mars red with light foreground */
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Borders and inputs for light mode */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+
+    /* Success/improvement colors for light mode */
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+    
+    /* Mitigation indicator for light mode */
+    --mitigation: 200 100% 70%;
+    --mitigation-foreground: 230 35% 7%;
+
+    /* Sidebar colors for light mode */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
