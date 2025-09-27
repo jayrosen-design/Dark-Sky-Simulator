@@ -161,9 +161,10 @@
   }
 
   body {
-    @apply bg-background text-foreground overflow-hidden;
+    @apply bg-background text-foreground;
     background: var(--gradient-space);
     transition: background 0.3s ease;
+    min-height: 100vh;
   }
   
   /* Custom scrollbar for space theme */

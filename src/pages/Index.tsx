@@ -92,7 +92,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-space">
-      <div className="w-full space-y-4 p-4 pb-8">{/* Added bottom padding */}
+      <div className="w-full max-w-7xl mx-auto space-y-4 p-4 pb-8">{/* Added max-width and centering */}
         {/* Header */}
         <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-glow">
           <div className="relative">
@@ -116,10 +116,10 @@ const Index = () => {
         </Card>
 
         {/* Main Content - Responsive Layout */}
-        <div className="space-y-4 lg:grid lg:grid-cols-12 lg:gap-4 lg:space-y-0">
+        <div className="space-y-4 xl:grid xl:grid-cols-12 xl:gap-4 xl:space-y-0">{/* Changed to xl breakpoint for better tablet experience */}
           
           {/* Left Column - Mitigation Controls */}
-          <div className="lg:col-span-3">
+          <div className="xl:col-span-3">{/* Changed to xl breakpoint */}
             <Card className="bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <div className="flex items-center justify-between">
@@ -150,7 +150,7 @@ const Index = () => {
           </div>
 
           {/* Center Column - Cost, Map and Sky View */}
-          <div className="lg:col-span-6">
+          <div className="xl:col-span-6">{/* Changed to xl breakpoint */}
             <div className="space-y-4">
               {/* Cost Estimate */}
               <CostEstimate mitigationSettings={mitigationSettings} />
@@ -163,7 +163,7 @@ const Index = () => {
                     Light Pollution Map
                   </h2>
                 </div>
-                <div className="h-64 sm:h-80 lg:h-[350px]">
+                <div className="h-64 sm:h-80 xl:h-[350px]">{/* Responsive height */}
                   <DarkSkyMap mitigationSettings={mitigationSettings} />
                 </div>
               </Card>
@@ -176,7 +176,7 @@ const Index = () => {
                     Night Sky Simulation
                   </h2>
                 </div>
-                <div className="h-64 sm:h-80 lg:h-[350px]">
+                <div className="h-64 sm:h-80 xl:h-[350px]">{/* Responsive height */}
                   <SkyPanorama mitigationSettings={mitigationSettings} />
                 </div>
               </Card>
@@ -184,7 +184,7 @@ const Index = () => {
           </div>
 
           {/* Right Column - Progress Dashboard */}
-          <div className="lg:col-span-3">
+          <div className="xl:col-span-3">{/* Changed to xl breakpoint */}
             <Card className="bg-card/50 backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
