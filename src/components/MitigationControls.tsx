@@ -182,6 +182,16 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
     }));
   };
 
+  const getActiveControlsCount = (controls: any[]) => {
+    return controls.filter(control => {
+      if (control.type === 'switch') {
+        return settings[control.key] === true;
+      } else {
+        return (settings[control.key] as number) > 0;
+      }
+    }).length;
+  };
+
   return (
     <>
     <div className="h-full overflow-y-auto p-3 space-y-2 pb-4">
@@ -202,13 +212,21 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
                   <div className={`p-1.5 rounded-md bg-${section.color}/10 text-${section.color}`}>
                     {section.icon}
                   </div>
-                  <h3 className="font-medium text-foreground text-sm">{section.title}</h3>
-                  <div className="ml-auto">
-                    {openSections[section.title] ? 
-                      <ChevronDown className="h-4 w-4" /> : 
-                      <ChevronRight className="h-4 w-4" />
-                    }
-                  </div>
+                   <h3 className="font-medium text-foreground text-sm">{section.title}</h3>
+                   {!openSections[section.title] && (
+                     <Badge 
+                       variant="secondary" 
+                       className="text-xs px-1.5 py-0.5 ml-2 bg-muted/40 text-muted-foreground"
+                     >
+                       {getActiveControlsCount(section.controls)}/{section.controls.length}
+                     </Badge>
+                   )}
+                   <div className="ml-auto">
+                     {openSections[section.title] ? 
+                       <ChevronDown className="h-4 w-4" /> : 
+                       <ChevronRight className="h-4 w-4" />
+                     }
+                   </div>
                 </div>
               </Button>
             </CollapsibleTrigger>
