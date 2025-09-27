@@ -63,7 +63,11 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
 
     return (
       <Sphere args={[50, 64, 32]} scale={[-1, 1, 1]}>
-        <meshBasicMaterial map={texture} side={THREE.BackSide} />
+        <meshBasicMaterial 
+          map={texture} 
+          side={THREE.BackSide}
+          color={new THREE.Color(1.3, 1.3, 1.3)} // 30% brighter
+        />
       </Sphere>
     );
   };
