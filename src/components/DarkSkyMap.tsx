@@ -67,7 +67,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
 
     // Add light pollution overlays
     addLightPollutionLayers();
-    addSensitiveAreas();
+    // addSensitiveAreas(); // Removed marker points
 
     console.log('Map initialized successfully');
 
