@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useState, useRef } from 'react';
+import React, { Suspense, useMemo, useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
@@ -95,6 +95,18 @@ const SkyPanorama: React.FC<SkyPanoramaProps> = ({ mitigationSettings }) => {
       camera.updateProjectionMatrix();
     }
   };
+
+  // Set initial camera view direction
+  useEffect(() => {
+    if (controlsRef.current) {
+      // Set initial view: South/Southwest and looking upward
+      // polarAngle: 0 = straight up, PI/2 = horizon, PI = straight down
+      // azimuthAngle: 0 = North, PI/2 = East, PI = South, 3*PI/2 = West
+      controlsRef.current.setPolarAngle(Math.PI * 0.35); // Look upward (about 65 degrees from vertical)
+      controlsRef.current.setAzimuthalAngle(Math.PI * 1.25); // Face South/Southwest (225 degrees)
+      controlsRef.current.update();
+    }
+  }, [controlsRef.current]);
 
   return (
     <div className="relative w-full h-full rounded-lg overflow-hidden border border-primary/20 shadow-glow bg-background">
