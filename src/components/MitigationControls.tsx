@@ -4,6 +4,7 @@ import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import MitigationControlModal from './MitigationControlModal';
 import { 
   Shield, 
@@ -17,7 +18,9 @@ import {
   RotateCcw,
   Users,
   BarChart3,
-  Info
+  Info,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 
 interface MitigationControlsProps {
@@ -30,6 +33,13 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
   onSettingChange
 }) => {
   const [selectedControl, setSelectedControl] = useState<string | null>(null);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    'Lighting Policy Changes': true,
+    'Public Infrastructure': false,
+    'Protected Zones': false,
+    'Transportation Mitigation': false,
+    'Community & Monitoring': false
+  });
   const controlSections = [
     {
       title: 'Lighting Policy Changes',
@@ -163,93 +173,118 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
       case 'Low': return 'muted';
       default: return 'muted';
     }
+    };
+
+  const toggleSection = (sectionTitle: string) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [sectionTitle]: !prev[sectionTitle]
+    }));
   };
 
   return (
     <>
-    <div className="h-full overflow-y-auto p-4 space-y-4 pb-6">
+    <div className="h-full overflow-y-auto p-3 space-y-2 pb-4">
 
       {controlSections.map((section) => (
-        <Card 
+        <Collapsible 
           key={section.title}
-          className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space"
+          open={openSections[section.title]}
+          onOpenChange={() => toggleSection(section.title)}
         >
-          <div className="flex items-center gap-2 mb-3">
-            <div className={`p-2 rounded-md bg-${section.color}/10 text-${section.color}`}>
-              {section.icon}
-            </div>
-            <h3 className="font-semibold text-foreground">{section.title}</h3>
-          </div>
-          
-          <div className="space-y-4">
-            {section.controls.map((control) => (
-              <div key={control.key} className="space-y-2">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <label className="text-sm font-medium text-foreground">
-                        {control.label}
-                      </label>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-5 w-5 p-0 hover:bg-primary/10"
-                        onClick={() => setSelectedControl(control.key)}
-                      >
-                        <Info className="h-3 w-3 text-muted-foreground hover:text-primary" />
-                      </Button>
-                      <Badge 
-                        variant="outline" 
-                        className={`text-xs border-${getImpactColor(control.impact)}/50 text-${getImpactColor(control.impact)}`}
-                      >
-                        {control.impact} Impact
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {control.description}
-                    </p>
+          <Card className="bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                className="w-full p-3 h-auto justify-start hover:bg-muted/20"
+              >
+                <div className="flex items-center gap-2 flex-1">
+                  <div className={`p-1.5 rounded-md bg-${section.color}/10 text-${section.color}`}>
+                    {section.icon}
                   </div>
-                  
-                  <div className="ml-4">
-                    {control.type === 'switch' ? (
-                      <Switch
-                        checked={settings[control.key] as boolean}
-                        onCheckedChange={(checked) => 
-                          onSettingChange(control.key, checked)
-                        }
-                        className="data-[state=checked]:bg-primary"
-                      />
-                    ) : (
-                      <div className="w-24">
-                        <Slider
-                          value={[settings[control.key] as number]}
-                          onValueChange={([value]) => 
-                            onSettingChange(control.key, value)
-                          }
-                          min={control.min}
-                          max={control.max}
-                          step={control.step}
-                          className="w-full"
-                        />
-                        <div className="text-xs text-center text-muted-foreground mt-1">
-                          {settings[control.key]}{control.unit}
-                        </div>
-                      </div>
-                    )}
+                  <h3 className="font-medium text-foreground text-sm">{section.title}</h3>
+                  <div className="ml-auto">
+                    {openSections[section.title] ? 
+                      <ChevronDown className="h-4 w-4" /> : 
+                      <ChevronRight className="h-4 w-4" />
+                    }
                   </div>
                 </div>
+              </Button>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent>
+              <div className="px-3 pb-3 space-y-3">
+              {section.controls.map((control) => (
+                <div key={control.key} className="space-y-1.5">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <label className="text-xs font-medium text-foreground">
+                          {control.label}
+                        </label>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-4 w-4 p-0 hover:bg-primary/10"
+                          onClick={() => setSelectedControl(control.key)}
+                        >
+                          <Info className="h-2.5 w-2.5 text-muted-foreground hover:text-primary" />
+                        </Button>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs px-1.5 py-0.5 border-${getImpactColor(control.impact)}/50 text-${getImpactColor(control.impact)}`}
+                        >
+                          {control.impact}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-tight">
+                        {control.description}
+                      </p>
+                    </div>
+                    
+                    <div className="ml-3">
+                      {control.type === 'switch' ? (
+                        <Switch
+                          checked={settings[control.key] as boolean}
+                          onCheckedChange={(checked) => 
+                            onSettingChange(control.key, checked)
+                          }
+                          className="data-[state=checked]:bg-primary scale-90"
+                        />
+                      ) : (
+                        <div className="w-20">
+                          <Slider
+                            value={[settings[control.key] as number]}
+                            onValueChange={([value]) => 
+                              onSettingChange(control.key, value)
+                            }
+                            min={control.min}
+                            max={control.max}
+                            step={control.step}
+                            className="w-full"
+                          />
+                          <div className="text-xs text-center text-muted-foreground mt-0.5">
+                            {settings[control.key]}{control.unit}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
               </div>
-            ))}
-          </div>
-        </Card>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
       ))}
       
-      <Card className="p-4 bg-gradient-dark-sky border-primary/20 shadow-glow">
+      <Card className="p-3 bg-gradient-dark-sky border-primary/20 shadow-glow">
         <div className="flex items-center gap-2 mb-2">
-          <Leaf className="w-4 h-4 text-success" />
-          <h3 className="font-semibold text-foreground">Certification Progress</h3>
+          <Leaf className="w-3 h-3 text-success" />
+          <h3 className="font-medium text-foreground text-sm">Certification Progress</h3>
         </div>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground leading-tight">
           These strategies contribute to achieving International Dark Sky Community certification. 
           Education and monitoring programs are essential requirements beyond just lighting improvements.
         </p>
