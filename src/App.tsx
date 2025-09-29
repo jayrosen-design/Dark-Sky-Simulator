@@ -14,6 +14,7 @@ import Policies from "./pages/Policies";
 import Certification from "./pages/Certification";
 import Resources from "./pages/Resources";
 import Team from "./pages/Team";
+import Diagram from "./pages/Diagram";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Navigation />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/diagram" element={<Diagram />} />
             <Route path="/light-pollution" element={<LightPollution />} />
             <Route path="/impact-animals" element={<ImpactAnimals />} />
             <Route path="/impact-humans" element={<ImpactHumans />} />

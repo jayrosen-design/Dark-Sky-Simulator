@@ -10,6 +10,7 @@ const Navigation = () => {
 
   const navItems = [
     { name: "Simulator", path: "/" },
+    { name: "Diagram", path: "/diagram" },
     { name: "Light Pollution", path: "/light-pollution" },
     { name: "Impact on Animals", path: "/impact-animals" },
     { name: "Impact on Humans", path: "/impact-humans" },
