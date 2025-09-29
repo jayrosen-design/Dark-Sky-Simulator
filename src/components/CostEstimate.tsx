@@ -142,7 +142,7 @@ const CostEstimate: React.FC<CostEstimateProps> = ({ mitigationSettings }) => {
   const costs = calculateCosts();
 
   return (
-    <Card className="w-full bg-card/50 backdrop-blur-sm border-primary/20">
+    <Card className="w-full bg-card backdrop-blur-sm border-primary/20">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <DollarSign className="h-4 w-4" />
