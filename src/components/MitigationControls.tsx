@@ -163,8 +163,8 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
                   <div className={`p-1.5 rounded-md bg-${section.color}/10 text-${section.color}`}>
                     {section.icon}
                   </div>
-                   <h3 className="font-medium text-foreground text-sm">{section.title}</h3>
-                   {!openSections[section.title] && <Badge variant="secondary" className="text-xs px-1.5 py-0.5 ml-2 bg-muted/40 text-muted-foreground">
+                   <h3 className="font-medium text-foreground text-base">{section.title}</h3>
+                   {!openSections[section.title] && <Badge variant="secondary" className="text-sm px-2 py-1 ml-2 bg-muted/40 text-muted-foreground">
                        {getActiveControlsCount(section.controls)}/{section.controls.length}
                      </Badge>}
                    <div className="ml-auto">
@@ -180,17 +180,17 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <label className="text-xs font-medium text-foreground">
+                        <label className="text-sm font-medium text-foreground">
                           {control.label}
                         </label>
                         <Button variant="ghost" size="sm" className="h-4 w-4 p-0 hover:bg-primary/10" onClick={() => setSelectedControl(control.key)}>
                           <Info className="h-2.5 w-2.5 text-muted-foreground hover:text-primary" />
                         </Button>
-                        <Badge variant="outline" className={`text-xs px-1.5 py-0.5 border-${getImpactColor(control.impact)}/50 text-${getImpactColor(control.impact)}`}>
+                        <Badge variant="outline" className={`text-sm px-2 py-1 border-${getImpactColor(control.impact)}/50 text-${getImpactColor(control.impact)}`}>
                           {control.impact}
                         </Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground leading-tight">
+                      <p className="text-sm text-muted-foreground leading-tight">
                         {control.description}
                       </p>
                     </div>
@@ -198,7 +198,7 @@ const MitigationControls: React.FC<MitigationControlsProps> = ({
                     <div className="ml-3">
                       {control.type === 'switch' ? <Switch checked={settings[control.key] as boolean} onCheckedChange={checked => onSettingChange(control.key, checked)} className="data-[state=checked]:bg-primary scale-90" /> : <div className="w-20">
                           <Slider value={[settings[control.key] as number]} onValueChange={([value]) => onSettingChange(control.key, value)} min={control.min} max={control.max} step={control.step} className="w-full" />
-                          <div className="text-xs text-center text-muted-foreground mt-0.5">
+                          <div className="text-sm text-center text-muted-foreground mt-0.5">
                             {settings[control.key]}{control.unit}
                           </div>
                         </div>}

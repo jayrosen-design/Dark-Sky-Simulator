@@ -147,7 +147,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
         <div className="flex items-center gap-2 mb-3">
           <Eye className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">Bortle Scale</h3>
+          <h3 className="font-semibold text-foreground text-base">Bortle Scale</h3>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="ghost" size="sm" className="p-1 h-6 w-6">
@@ -180,11 +180,11 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             <div className="flex items-center justify-center gap-1 mb-2">
               <Target className="w-3 h-3 text-success" />
             </div>
-            <div className="font-medium text-foreground text-xs mb-1">Paynes Prairie</div>
-            <div className="text-muted-foreground text-xs">
+            <div className="font-medium text-foreground text-sm mb-1">Paynes Prairie</div>
+            <div className="text-muted-foreground text-sm">
               <span className="font-bold text-yellow-500">Bortle {metrics.currentBortle}</span>
               {metrics.bortleImprovement > 0 && (
-                <div className="font-bold text-green-500 text-xs mt-0.5"> → Bortle {metrics.improvedBortle.toFixed(1)}</div>
+                <div className="font-bold text-green-500 text-sm mt-0.5"> → Bortle {metrics.improvedBortle.toFixed(1)}</div>
               )}
             </div>
           </div>
@@ -194,10 +194,10 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             <div className="flex items-center justify-center gap-1 mb-2">
               <Star className="w-3 h-3 text-mitigation" />
             </div>
-            <div className="font-medium text-foreground text-xs mb-1">Suburban Gainesville</div>
-            <div className="text-muted-foreground text-xs">
+            <div className="font-medium text-foreground text-sm mb-1">Suburban Gainesville</div>
+            <div className="text-muted-foreground text-sm">
               <span className="font-bold text-orange-500">Bortle 6</span>
-              <div className="font-bold text-yellow-500 text-xs mt-0.5"> → Bortle 4</div>
+              <div className="font-bold text-yellow-500 text-sm mt-0.5"> → Bortle 4</div>
             </div>
           </div>
 
@@ -206,10 +206,10 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             <div className="flex items-center justify-center gap-1 mb-2">
               <MapPin className="w-3 h-3 text-primary" />
             </div>
-            <div className="font-medium text-foreground text-xs mb-1">Gainesville Downtown</div>
-            <div className="text-muted-foreground text-xs">
+            <div className="font-medium text-foreground text-sm mb-1">Gainesville Downtown</div>
+            <div className="text-muted-foreground text-sm">
               <span className="font-bold text-red-500">Bortle 9</span>
-              <div className="font-bold text-orange-500 text-xs mt-0.5"> → Bortle 7</div>
+              <div className="font-bold text-orange-500 text-sm mt-0.5"> → Bortle 7</div>
             </div>
           </div>
         </div>
@@ -219,12 +219,12 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
         <div className="flex items-center gap-2 mb-3">
           <TrendingUp className="w-5 h-5 text-mitigation" />
-          <h3 className="font-semibold text-foreground">Implementation Progress</h3>
+          <h3 className="font-semibold text-foreground text-base">Implementation Progress</h3>
         </div>
         
         <div className="space-y-4">
           <div>
-            <div className="flex justify-between text-sm mb-1">
+            <div className="flex justify-between text-base mb-1">
               <span className="text-muted-foreground">Lighting Policy</span>
               <span className="text-foreground font-medium">{Math.round(metrics.policyScore)}%</span>
             </div>
@@ -232,7 +232,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
           </div>
           
           <div>
-            <div className="flex justify-between text-sm mb-1">
+            <div className="flex justify-between text-base mb-1">
               <span className="text-muted-foreground">Infrastructure</span>
               <span className="text-foreground font-medium">{Math.round(metrics.infrastructureScore)}%</span>
             </div>
@@ -240,7 +240,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
           </div>
           
           <div>
-            <div className="flex justify-between text-sm mb-1">
+            <div className="flex justify-between text-base mb-1">
               <span className="text-muted-foreground">Protected Areas</span>
               <span className="text-foreground font-medium">{Math.round(metrics.protectionScore)}%</span>
             </div>
@@ -248,7 +248,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
           </div>
           
           <div className="pt-2 border-t border-border">
-            <div className="flex justify-between text-sm mb-1">
+            <div className="flex justify-between text-base mb-1">
               <span className="font-medium text-foreground">Overall Progress</span>
               <span className="text-primary font-semibold">{Math.round(metrics.overallScore)}%</span>
             </div>
@@ -261,7 +261,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
         <div className="flex items-center gap-2 mb-3">
           <Award className="w-5 h-5 text-accent" />
-          <h3 className="font-semibold text-foreground">Dark Sky Certification</h3>
+          <h3 className="font-semibold text-foreground text-base">Dark Sky Certification</h3>
           <Badge 
             variant="outline" 
             className={`ml-auto ${
@@ -276,7 +276,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         
         <div className="space-y-2 mb-3">
           {darkSkyStatus.requirements.map((req) => (
-            <div key={req.name} className="flex items-center gap-2 text-sm">
+            <div key={req.name} className="flex items-center gap-2 text-base">
               <CheckCircle2 
                 className={`w-4 h-4 ${
                   req.met ? 'text-success' : 'text-muted-foreground'
@@ -285,7 +285,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
               <span className={req.met ? 'text-foreground' : 'text-muted-foreground'}>
                 {req.name}
               </span>
-              <span className="ml-auto text-xs text-muted-foreground">
+              <span className="ml-auto text-sm text-muted-foreground">
                 {req.weight}%
               </span>
             </div>
@@ -293,7 +293,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         </div>
         
         <div>
-          <div className="flex justify-between text-sm mb-1">
+          <div className="flex justify-between text-base mb-1">
             <span className="text-muted-foreground">Certification Progress</span>
             <span className="text-foreground font-medium">{darkSkyStatus.progress}%</span>
           </div>
@@ -305,7 +305,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       <Card className="p-4 bg-card/80 backdrop-blur-sm border-primary/20 shadow-space">
         <div className="flex items-center gap-2 mb-3">
           <Star className="w-4 h-4 text-accent" />
-          <h3 className="font-semibold text-foreground">Success Models</h3>
+          <h3 className="font-semibold text-foreground text-base">Success Models</h3>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="ghost" size="sm" className="p-1 h-6 w-6">
@@ -350,10 +350,10 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             onClick={() => onApplyPreset(presets.groveland)}
             className="w-full p-3 rounded-lg bg-card/50 hover:bg-card/70 border border-primary/20 text-left transition-colors group"
           >
-            <div className="font-medium text-foreground group-hover:text-foreground">
+            <div className="font-medium text-foreground group-hover:text-foreground text-base">
               Groveland, FL Strategy
             </div>
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-sm text-muted-foreground mt-1">
               3000K limit, full shielding, 10-year retrofit plan
             </div>
           </button>
@@ -362,10 +362,10 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             onClick={() => onApplyPreset(presets.flagstaff)}
             className="w-full p-3 rounded-lg bg-card/50 hover:bg-card/70 border border-primary/20 text-left transition-colors group"
           >
-            <div className="font-medium text-foreground group-hover:text-foreground">
+            <div className="font-medium text-foreground group-hover:text-foreground text-base">
               Flagstaff, AZ Strategy
             </div>
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-sm text-muted-foreground mt-1">
               2700K limit, lumen caps, comprehensive lighting zones
             </div>
           </button>
