@@ -93,8 +93,8 @@
 
   /* Light mode variations */
   .light {
-    /* Light backgrounds with subtle space theme */
-    --background: 210 40% 98%;
+    /* Light backgrounds with darker space theme for better contrast */
+    --background: 210 20% 85%;
     --foreground: 230 35% 7%;
 
     /* Card and surface colors for light mode */
@@ -116,9 +116,9 @@
     --muted: 210 40% 96%;
     --muted-foreground: 215 25% 35%;
 
-    /* Accent - warm amber for light pollution indicators */
-    --accent: 45 100% 60%;
-    --accent-foreground: 230 35% 7%;
+    /* Accent - darker amber for better contrast in light mode */
+    --accent: 45 100% 45%;
+    --accent-foreground: 0 0% 100%;
 
     /* Destructive - Mars red with light foreground */
     --destructive: 0 75% 55%;
