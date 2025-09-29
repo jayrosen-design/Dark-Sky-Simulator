@@ -94,7 +94,7 @@
   /* Light mode variations */
   .light {
     /* Light backgrounds with darker space theme for better contrast */
-    --background: 210 20% 85%;
+    --background: 210 25% 75%;
     --foreground: 230 35% 7%;
 
     /* Card and surface colors for light mode */
@@ -138,7 +138,7 @@
     --mitigation-foreground: 230 35% 7%;
 
     /* Light mode gradients */
-    --gradient-space: linear-gradient(135deg, hsl(210, 40%, 98%), hsl(220, 25%, 95%));
+    --gradient-space: linear-gradient(135deg, hsl(210, 25%, 75%), hsl(220, 30%, 70%));
     --gradient-aurora: linear-gradient(135deg, hsl(217, 91%, 60%), hsl(200, 100%, 70%));
     --gradient-pollution: linear-gradient(135deg, hsl(45, 100%, 60%), hsl(15, 100%, 65%));
     --gradient-dark-sky: linear-gradient(135deg, hsl(210, 40%, 96%), hsl(220, 15%, 92%));
