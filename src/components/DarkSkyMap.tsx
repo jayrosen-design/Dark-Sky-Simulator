@@ -30,7 +30,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
 
     // Add appropriate tile layer based on theme
     const tileUrl = theme === 'light' 
-      ? 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=YOUR-API-KEY'
+      ? 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=5876bdd0-a421-4f9e-a2c9-c8adc128fa15'
       : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
       
     tileLayer.current = L.tileLayer(tileUrl, {
@@ -84,7 +84,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     if (!map.current || !tileLayer.current) return;
     
     const tileUrl = theme === 'light' 
-      ? 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=YOUR-API-KEY'
+      ? 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=5876bdd0-a421-4f9e-a2c9-c8adc128fa15'
       : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
     
     tileLayer.current.setUrl(tileUrl);
