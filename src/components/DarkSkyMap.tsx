@@ -102,7 +102,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     // Clear existing layers
     pollutionLayers.current.clearLayers();
 
-    // Simulated light pollution data
+    // Simulated light pollution data based on lightpollutionmap.info
     const pollutionAreas = [
       // Gainesville urban core (Bortle 8-9)
       {
@@ -130,7 +130,33 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
         area: 'Suburban Gainesville',
         color: '#f97316'
       },
-      // Paynes Prairie area (Bortle 4-5)
+      // Alachua County moderate pollution (Bortle 5-6)
+      {
+        coords: [
+          [29.75, -82.55],
+          [29.75, -82.15],
+          [29.8, -82.15],
+          [29.8, -82.55]
+        ],
+        bortle: 5,
+        intensity: 0.4,
+        area: 'North Alachua County',
+        color: '#fbbf24'
+      },
+      // San Felasco area (Bortle 4-5)
+      {
+        coords: [
+          [29.68, -82.5],
+          [29.68, -82.35],
+          [29.75, -82.35],
+          [29.75, -82.5]
+        ],
+        bortle: 4,
+        intensity: 0.3,
+        area: 'San Felasco Area',
+        color: '#fb923c'
+      },
+      // Paynes Prairie area (Bortle 3-4)
       {
         coords: [
           [29.55, -82.35],
@@ -138,10 +164,75 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
           [29.62, -82.25],
           [29.62, -82.35]
         ],
-        bortle: 4,
-        intensity: 0.3,
+        bortle: 3,
+        intensity: 0.2,
         area: 'Paynes Prairie',
+        color: '#22c55e'
+      },
+      // Ocala National Forest area (Bortle 2-3)
+      {
+        coords: [
+          [29.4, -82.1],
+          [29.4, -81.9],
+          [29.55, -81.9],
+          [29.55, -82.1]
+        ],
+        bortle: 2,
+        intensity: 0.15,
+        area: 'Ocala National Forest',
+        color: '#22c55e'
+      },
+      // Western rural areas (Bortle 3-4)
+      {
+        coords: [
+          [29.5, -82.6],
+          [29.5, -82.4],
+          [29.8, -82.4],
+          [29.8, -82.6]
+        ],
+        bortle: 3,
+        intensity: 0.2,
+        area: 'Western Rural Areas',
+        color: '#22c55e'
+      },
+      // Eastern edge with moderate development (Bortle 4-5)
+      {
+        coords: [
+          [29.5, -82.1],
+          [29.5, -81.9],
+          [29.75, -81.9],
+          [29.75, -82.1]
+        ],
+        bortle: 4,
+        intensity: 0.25,
+        area: 'Eastern Development',
         color: '#fb923c'
+      },
+      // Northern areas with scattered development (Bortle 4)
+      {
+        coords: [
+          [29.8, -82.4],
+          [29.8, -82.1],
+          [29.9, -82.1],
+          [29.9, -82.4]
+        ],
+        bortle: 4,
+        intensity: 0.25,
+        area: 'Northern Areas',
+        color: '#fb923c'
+      },
+      // Southern rural transition (Bortle 3-4)
+      {
+        coords: [
+          [29.4, -82.4],
+          [29.4, -82.1],
+          [29.5, -82.1],
+          [29.5, -82.4]
+        ],
+        bortle: 3,
+        intensity: 0.2,
+        area: 'Southern Rural',
+        color: '#22c55e'
       }
     ];
 
