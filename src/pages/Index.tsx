@@ -98,7 +98,7 @@ const Index = () => {
           
           {/* Left Column - Mitigation Controls */}
           <div className="xl:col-span-3">{/* Changed to xl breakpoint */}
-            <Card className="bg-card/50 backdrop-blur-sm border-primary/20">
+            <Card className="bg-card backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -134,7 +134,7 @@ const Index = () => {
               <CostEstimate mitigationSettings={mitigationSettings} />
 
               {/* Light Pollution Map */}
-              <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+              <Card className="p-4 bg-card backdrop-blur-sm border-primary/20">
                 <div className="flex items-center gap-2 mb-4">
                   <Map className="w-5 h-5 text-primary" />
                   <h2 className="text-lg font-semibold text-foreground">
@@ -147,7 +147,7 @@ const Index = () => {
               </Card>
 
               {/* Sky Panorama Viewer */}
-              <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+              <Card className="p-4 bg-card backdrop-blur-sm border-primary/20">
                 <div className="flex items-center gap-2 mb-4">
                   <Eye className="w-5 h-5 text-primary" />
                   <h2 className="text-lg font-semibold text-foreground">
@@ -163,7 +163,7 @@ const Index = () => {
 
           {/* Right Column - Progress Dashboard */}
           <div className="xl:col-span-3">{/* Changed to xl breakpoint */}
-            <Card className="bg-card/50 backdrop-blur-sm border-primary/20">
+            <Card className="bg-card backdrop-blur-sm border-primary/20">
               <div className="p-4 border-b border-border">
                 <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                   <BarChart3 className="w-5 h-5 text-primary" />

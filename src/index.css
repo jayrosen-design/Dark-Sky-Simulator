@@ -97,7 +97,7 @@
     --background: 210 25% 75%;
     --foreground: 230 35% 7%;
 
-    /* Card and surface colors for light mode */
+    /* Card and surface colors for light mode - fully opaque white */
     --card: 0 0% 100%;
     --card-foreground: 230 35% 7%;
 
