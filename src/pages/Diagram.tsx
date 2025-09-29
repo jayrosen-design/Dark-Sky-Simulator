@@ -169,6 +169,104 @@ const Diagram = () => {
             </CardContent>
           </Card>
         </div>
+
+        <Card className="w-full mt-8">
+          <CardHeader>
+            <CardTitle className="text-lg">Third-Party & Open-Source Software Dependencies</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div>
+                <h4 className="font-semibold text-primary mb-3">Frontend Framework & Core</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• <strong>React 18.3.1</strong> - Component-based UI library</li>
+                  <li>• <strong>TypeScript</strong> - Static type checking</li>
+                  <li>• <strong>Vite</strong> - Build tool and dev server</li>
+                  <li>• <strong>React Router DOM 6.30.1</strong> - Client-side routing</li>
+                  <li>• <strong>TanStack Query 5.83.0</strong> - Data fetching & caching</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-primary mb-3">UI Components & Styling</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• <strong>Radix UI</strong> - Accessible component primitives</li>
+                  <li>• <strong>Tailwind CSS</strong> - Utility-first CSS framework</li>
+                  <li>• <strong>Lucide React 0.462.0</strong> - Icon library</li>
+                  <li>• <strong>Next Themes 0.3.0</strong> - Dark/light mode</li>
+                  <li>• <strong>Class Variance Authority</strong> - Component variants</li>
+                  <li>• <strong>Tailwind Merge</strong> - CSS class merging</li>
+                  <li>• <strong>Sonner 1.7.4</strong> - Toast notifications</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-primary mb-3">Mapping & 3D Graphics</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• <strong>Leaflet 1.9.4</strong> - Interactive maps</li>
+                  <li>• <strong>Three.js 0.180.0</strong> - 3D graphics library</li>
+                  <li>• <strong>React Three Fiber 8.18.0</strong> - React renderer for Three.js</li>
+                  <li>• <strong>React Three Drei 9.122.0</strong> - Three.js utilities</li>
+                  <li>• <strong>OpenStreetMap</strong> - Map tile provider</li>
+                  <li>• <strong>CartoDB</strong> - Dark theme map tiles</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-primary mb-3">Data Visualization</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• <strong>Recharts 2.15.4</strong> - Chart library</li>
+                  <li>• <strong>Date-fns 3.6.0</strong> - Date manipulation</li>
+                  <li>• <strong>Embla Carousel 8.6.0</strong> - Carousel component</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-primary mb-3">Form Handling & Validation</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• <strong>React Hook Form 7.61.1</strong> - Form management</li>
+                  <li>• <strong>Zod 3.25.76</strong> - Schema validation</li>
+                  <li>• <strong>Hookform Resolvers 3.10.0</strong> - Form validation</li>
+                  <li>• <strong>Input OTP 1.4.2</strong> - OTP input component</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-primary mb-3">Development & Build Tools</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• <strong>ESLint</strong> - Code linting</li>
+                  <li>• <strong>PostCSS</strong> - CSS processing</li>
+                  <li>• <strong>Tailwind CSS Animate</strong> - Animation utilities</li>
+                  <li>• <strong>React Resizable Panels 2.1.9</strong> - Resizable layouts</li>
+                  <li>• <strong>CLSX 2.1.1</strong> - Conditional classes</li>
+                  <li>• <strong>CMDK 1.1.1</strong> - Command palette</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-border">
+              <h4 className="font-semibold text-primary mb-3">Scientific Data Sources & Methodologies</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    <strong>Bortle Scale Classification:</strong> Based on standardized light pollution measurements developed by John E. Bortle for quantifying night sky darkness.
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    <strong>Light Pollution Modeling:</strong> Simulation factors derived from peer-reviewed research on outdoor lighting mitigation strategies and their effectiveness.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    <strong>Cost Analysis Framework:</strong> Economic modeling based on industry standards for lighting infrastructure, energy costs, and maintenance schedules.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    <strong>Sky Panorama Textures:</strong> Photographic data representing different levels of light pollution impact on night sky visibility.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
