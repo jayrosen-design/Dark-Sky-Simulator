@@ -48,8 +48,8 @@
     /* Light pollution colors */
     --bortle-1: 230 100% 15%;  /* Excellent dark sky */
     --bortle-4: 45 80% 40%;    /* Rural transition */
-    --bortle-6: 35 85% 35%;    /* Darker yellow for better contrast in light mode */
-    --bortle-9: 15 100% 50%;   /* Darker red for better contrast */
+    --bortle-6: 35 90% 50%;    /* Bright suburban */
+    --bortle-9: 15 100% 65%;   /* Inner city sky */
     
     /* Success/improvement colors */
     --success: 142 76% 36%;
@@ -64,9 +64,6 @@
     --gradient-aurora: linear-gradient(135deg, hsl(217, 91%, 60%), hsl(200, 100%, 70%));
     --gradient-pollution: linear-gradient(135deg, hsl(45, 100%, 60%), hsl(15, 100%, 65%));
     --gradient-dark-sky: linear-gradient(135deg, hsl(230, 100%, 15%), hsl(260, 80%, 25%));
-    
-    /* Light mode gradients */
-    --gradient-space-light: linear-gradient(135deg, hsl(210, 20%, 94%), hsl(220, 13%, 88%));
     
     /* Shadows */
     --shadow-space: 0 10px 40px -10px hsl(230, 35%, 4%);
@@ -97,7 +94,7 @@
   /* Light mode variations */
   .light {
     /* Light backgrounds with subtle space theme */
-    --background: 210 20% 96%;
+    --background: 210 40% 98%;
     --foreground: 230 35% 7%;
 
     /* Card and surface colors for light mode */
@@ -112,24 +109,24 @@
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - lighter space purple */
-    --secondary: 260 15% 88%;
+    --secondary: 260 15% 90%;
     --secondary-foreground: 230 35% 7%;
 
     /* Muted elements for light mode */
-    --muted: 210 40% 93%;
+    --muted: 210 40% 96%;
     --muted-foreground: 215 25% 35%;
 
-    /* Accent - darker warm amber for better contrast */
-    --accent: 35 95% 40%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent - warm amber for light pollution indicators */
+    --accent: 45 100% 60%;
+    --accent-foreground: 230 35% 7%;
 
     /* Destructive - Mars red with light foreground */
     --destructive: 0 75% 55%;
     --destructive-foreground: 210 40% 98%;
 
     /* Borders and inputs for light mode */
-    --border: 220 13% 88%;
-    --input: 220 13% 88%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
     --ring: 217 91% 60%;
 
     /* Success/improvement colors for light mode */
@@ -141,7 +138,7 @@
     --mitigation-foreground: 230 35% 7%;
 
     /* Light mode gradients */
-    --gradient-space: var(--gradient-space-light);
+    --gradient-space: linear-gradient(135deg, hsl(210, 40%, 98%), hsl(220, 25%, 95%));
     --gradient-aurora: linear-gradient(135deg, hsl(217, 91%, 60%), hsl(200, 100%, 70%));
     --gradient-pollution: linear-gradient(135deg, hsl(45, 100%, 60%), hsl(15, 100%, 65%));
     --gradient-dark-sky: linear-gradient(135deg, hsl(210, 40%, 96%), hsl(220, 15%, 92%));

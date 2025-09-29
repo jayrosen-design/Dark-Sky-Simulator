@@ -91,7 +91,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--gradient-space)' }}>
+    <div className="min-h-screen bg-gradient-space">
       <div className="w-full space-y-4 p-2 sm:p-4 pb-8">{/* Reduced padding on mobile, wider on desktop */}
         {/* Main Content - Responsive Layout */}
         <div className="space-y-4 xl:grid xl:grid-cols-12 xl:gap-4 xl:space-y-0">{/* Changed to xl breakpoint for better tablet experience */}
