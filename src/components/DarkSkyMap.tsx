@@ -30,7 +30,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
 
     // Add appropriate tile layer based on theme
     const tileUrl = theme === 'light' 
-      ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png'
+      ? 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=YOUR-API-KEY'
       : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
       
     tileLayer.current = L.tileLayer(tileUrl, {
@@ -84,7 +84,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
     if (!map.current || !tileLayer.current) return;
     
     const tileUrl = theme === 'light' 
-      ? 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png'
+      ? 'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=YOUR-API-KEY'
       : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
     
     tileLayer.current.setUrl(tileUrl);
