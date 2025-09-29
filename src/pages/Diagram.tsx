@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowRight, ArrowDown } from 'lucide-react';
 
 const Diagram = () => {
   return (
@@ -24,59 +25,88 @@ const Diagram = () => {
           </CardHeader>
           <CardContent>
             <div className="w-full overflow-x-auto">
-              <lov-mermaid>
-graph TD
-    A[User Input: Mitigation Controls] --> B{Mitigation Settings State}
-    
-    B --> C[Cost Calculation Engine]
-    B --> D[Bortle Scale Calculator]  
-    B --> E[Light Pollution Map Renderer]
-    B --> F[Night Sky Panorama Generator]
-    
-    C --> C1[Calculate Initial Costs]
-    C --> C2[Calculate Annual Savings]
-    C --> C3[Calculate Maintenance Costs]
-    C1 --> C4[Cost Estimate Display]
-    C2 --> C4
-    C3 --> C4
-    C4 --> C5[Payback Period Analysis]
-    
-    D --> D1[Apply Base Bortle Values]
-    D1 --> D2[Apply Shielding Factor 0.75x]
-    D2 --> D3[Apply CCT Limits 0.85x]
-    D3 --> D4[Apply Curfews 0.70x]
-    D4 --> D5[Apply Dimming 0.90x]
-    D5 --> D6[Apply Intensity Reduction]
-    D6 --> D7[Calculate Final Bortle Class]
-    D7 --> D8[Update Sky Panorama Texture]
-    
-    E --> E1[Load Base Light Pollution Data]
-    E1 --> E2[Calculate Mitigation Factor]
-    E2 --> E3[Apply Opacity Reduction]
-    E3 --> E4[Update Polygon Colors]
-    E4 --> E5[Render Updated Map Layer]
-    
-    F --> F1[Select Area Baseline]
-    F1 --> F2[Apply Bortle Calculation]
-    F2 --> F3[Load Corresponding Sky Texture]
-    F3 --> F4[Render 3D Panorama Sphere]
-    
-    D7 --> G[Progress Dashboard]
-    C5 --> G
-    G --> G1[Calculate Overall Progress]
-    G1 --> G2[Update Achievement Metrics]
-    
-    classDef inputNode fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef processNode fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff  
-    classDef outputNode fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
-    classDef calcNode fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff
-    
-    class A inputNode
-    class B inputNode
-    class C,D,E,F processNode
-    class C4,C5,D8,E5,F4,G2 outputNode
-    class C1,C2,C3,D1,D2,D3,D4,D5,D6,D7,E1,E2,E3,E4,F1,F2,F3,G,G1 calcNode
-              </lov-mermaid>
+              <div className="flex flex-col items-center space-y-6 p-8">
+                {/* User Input */}
+                <div className="bg-blue-500 text-white px-6 py-3 rounded-lg font-medium shadow-lg">
+                  User Input: Mitigation Controls
+                </div>
+                
+                <ArrowDown className="text-muted-foreground" />
+                
+                {/* State Management */}
+                <div className="bg-blue-600 text-white px-8 py-4 rounded-lg font-medium shadow-lg">
+                  Mitigation Settings State
+                </div>
+                
+                <ArrowDown className="text-muted-foreground" />
+                
+                {/* Processing Engines */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className="bg-green-500 text-white px-4 py-3 rounded-lg font-medium text-center shadow-lg">
+                      Cost Calculation Engine
+                    </div>
+                    <ArrowDown className="text-muted-foreground" />
+                    <div className="space-y-2 text-center">
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Calculate Initial Costs</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Calculate Annual Savings</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Calculate Maintenance</div>
+                      <ArrowDown className="text-muted-foreground h-4 w-4" />
+                      <div className="bg-orange-500 text-white px-3 py-2 rounded text-sm">Cost Estimate Display</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className="bg-green-500 text-white px-4 py-3 rounded-lg font-medium text-center shadow-lg">
+                      Bortle Scale Calculator
+                    </div>
+                    <ArrowDown className="text-muted-foreground" />
+                    <div className="space-y-2 text-center">
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Apply Base Values</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Shielding Factor 0.75x</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">CCT Limits 0.85x</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Curfews 0.70x</div>
+                      <ArrowDown className="text-muted-foreground h-4 w-4" />
+                      <div className="bg-orange-500 text-white px-3 py-2 rounded text-sm">Update Sky Texture</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className="bg-green-500 text-white px-4 py-3 rounded-lg font-medium text-center shadow-lg">
+                      Map Renderer
+                    </div>
+                    <ArrowDown className="text-muted-foreground" />
+                    <div className="space-y-2 text-center">
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Load Base Data</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Calculate Mitigation</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Apply Opacity</div>
+                      <ArrowDown className="text-muted-foreground h-4 w-4" />
+                      <div className="bg-orange-500 text-white px-3 py-2 rounded text-sm">Render Map Layer</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className="bg-green-500 text-white px-4 py-3 rounded-lg font-medium text-center shadow-lg">
+                      Sky Panorama Generator
+                    </div>
+                    <ArrowDown className="text-muted-foreground" />
+                    <div className="space-y-2 text-center">
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Select Area Baseline</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Apply Bortle Calc</div>
+                      <div className="bg-purple-500 text-white px-3 py-2 rounded text-sm">Load Sky Texture</div>
+                      <ArrowDown className="text-muted-foreground h-4 w-4" />
+                      <div className="bg-orange-500 text-white px-3 py-2 rounded text-sm">Render 3D Panorama</div>
+                    </div>
+                  </div>
+                </div>
+
+                <ArrowDown className="text-muted-foreground" />
+                
+                {/* Progress Dashboard */}
+                <div className="bg-orange-500 text-white px-8 py-4 rounded-lg font-medium shadow-lg">
+                  Progress Dashboard & Achievement Metrics
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
