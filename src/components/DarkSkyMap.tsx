@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Card } from '@/components/ui/card';
+import { Slider } from '@/components/ui/slider';
 import { useTheme } from 'next-themes';
 
 interface DarkSkyMapProps {
@@ -13,6 +14,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   const map = useRef<L.Map | null>(null);
   const pollutionLayers = useRef<L.LayerGroup | null>(null);
   const tileLayer = useRef<L.TileLayer | null>(null);
+  const [pollutionOpacity, setPollutionOpacity] = useState<number[]>([60]);
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -94,7 +96,7 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   useEffect(() => {
     if (!map.current) return;
     updatePollutionVisualization();
-  }, [mitigationSettings]);
+  }, [mitigationSettings, pollutionOpacity]);
 
   const addLightPollutionLayers = () => {
     if (!map.current || !pollutionLayers.current) return;
@@ -212,12 +214,13 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
 
     // Calculate mitigation effect
     const mitigationFactor = calculateMitigationFactor(mitigationSettings);
+    const baseOpacity = pollutionOpacity[0] / 100;
     
     // Update layer colors and opacity based on mitigation
     pollutionLayers.current.eachLayer((layer: any) => {
       if (layer.setStyle && layer._originalColor) {
-        // Maintain minimum visibility while showing improvement
-        const adjustedOpacity = Math.max(0.2, layer._originalOpacity * mitigationFactor);
+        // Apply both mitigation factor and user-controlled opacity
+        const adjustedOpacity = Math.max(0.1, layer._originalOpacity * mitigationFactor * baseOpacity);
         
         // Adjust color to show improvement - shift toward cooler colors
         let adjustedColor = layer._originalColor;
@@ -265,6 +268,28 @@ const DarkSkyMap: React.FC<DarkSkyMapProps> = ({ mitigationSettings }) => {
   return (
     <div className="relative w-full h-full rounded-lg overflow-hidden border border-primary/20 shadow-glow">
       <div ref={mapContainer} className="absolute inset-0" />
+      
+      {/* Opacity Control Slider */}
+      <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20 z-[1000] w-48">
+        <h4 className="font-semibold text-xs mb-2">Light Pollution Opacity</h4>
+        <div className="flex items-center gap-2">
+          <span className="text-xs">0%</span>
+          <Slider
+            value={pollutionOpacity}
+            onValueChange={setPollutionOpacity}
+            max={100}
+            min={0}
+            step={5}
+            className="flex-1"
+          />
+          <span className="text-xs">100%</span>
+        </div>
+        <div className="text-xs text-muted-foreground mt-1 text-center">
+          {pollutionOpacity[0]}%
+        </div>
+      </div>
+      
+      {/* Legend */}
       <div className="absolute top-4 right-16 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20 z-[1000]">
         <h4 className="font-semibold text-sm mb-2">Light Pollution Levels</h4>
         <div className="space-y-1 text-xs">
