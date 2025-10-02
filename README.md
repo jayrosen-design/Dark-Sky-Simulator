@@ -7,6 +7,10 @@
 **Conference:** UF Astraeus Space Research Day (October 1, 2025)  
 **Live Application:** https://jayrosen.design/dark-sky
 
+![Dark Sky Simulator Research Poster](https://github.com/jayrosen-design/alachua-sky-saver/blob/main/public/Jay%20Rosen%20-%20Dark%20Sky%20Simulator%20Poster.jpg?raw=true)
+
+📄 **[Download Research Paper (PDF)](https://github.com/jayrosen-design/alachua-sky-saver/blob/main/public/Dark%20Sky%20Simulator%20paper.pdf)**
+
 ## Acknowledgements
 
 This research was prepared at the request of the Alachua County Environmental Protection Advisory Committee (EPAC). The author also thanks the members of the Alachua Astronomy Club and Chiefland Astronomy Village for their community support and shared passion for dark sky preservation.
