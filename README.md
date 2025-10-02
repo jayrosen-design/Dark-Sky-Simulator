@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17252185.svg)](https://doi.org/10.5281/zenodo.17252185)
+
 # Dark Sky Simulator
 
 **Light Pollution Mitigation Modeling for Alachua County Environmental Protection**
